@@ -1,0 +1,16 @@
+{
+    "name": "hcore/cli",
+    "description": "HCore CLI - Ecosystem",
+    "type": "project",
+    "authors": [
+        {
+            "name": "hwicarminerumma",
+            "email": "carmine.rumma@healthtouch.eu"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "bin": [
+        "hcore"
+    ]
+}
