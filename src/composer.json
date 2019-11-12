@@ -1,0 +1,35 @@
+{
+    "name": "-h",
+    "type": "library",
+    "version": "1.0",
+    "description": "hcore installer",
+    "authors": [
+        {
+            "name": "Vincenzo Romano",
+            "email": "vincenzo.romano@healthtouch.eu"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "hcore/core": "0.3.4"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://bitbucket.org/HealthwareGroup/hcore.git"
+        },
+        {
+            "type": "git",
+            "url": "https://bitbucket.org/cmsff/libs.git"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "hcore\\": "src/",
+            "hcore\\app\\conf\\": "app/conf/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    }
+}

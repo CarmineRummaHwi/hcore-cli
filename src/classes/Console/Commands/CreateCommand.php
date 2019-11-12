@@ -1,7 +1,29 @@
 <?php
 
+
+
 class CreateCommand extends BaseCommand {
 
+    public $name        = "create";
+    public $description = "Hcore install - hcore create <name>";
+    public $arguments   = [
+        [
+            "name"          => "name",
+            "description"   => "project name",
+        ],
+    ];
+    public $options_desc = [
+        [
+            "short"         => "-u",
+            "regular"       => "-user",
+            "description"   => "bitbucket username",
+        ],
+        [
+            "short"         => "-p",
+            "regular"       => "-password",
+            "description"   => "bitbucket password",
+        ]
+    ];
     public function exec()
     {
         $log = new CLIColors();
@@ -15,7 +37,7 @@ class CreateCommand extends BaseCommand {
                 'email' => 'vincenzo.romano@healthtouch.eu',
             );
 
-            $composer = new ComposerFactory();
+            $composer = new \hcore\cli\ComposerFactory();
             $composer->add("name", $this->argv[2]);
             $composer->add("type", "library");
             $composer->add("version", "1.0");

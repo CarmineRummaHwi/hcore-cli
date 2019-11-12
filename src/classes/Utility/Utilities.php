@@ -6,6 +6,18 @@ namespace hcore\cli;
 
 class Utilities
 {
+
+    public static function ppp(array $arr):void {
+        echo "<pre>";
+        print_r($arr);
+    }
+
+    public static function ddd(array $arr):void {
+        echo "<pre>";
+        print_r($arr);
+        die("END");
+    }
+
     public static function copyResource(string $src, string $dest): bool
     {
         if (file_exists($dest)) {
