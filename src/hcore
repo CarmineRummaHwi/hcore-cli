@@ -1,58 +1,6 @@
-#!/usr/bin/env php
-<?php
+#!/bin/bash
 
-set_time_limit(0);
-
-$cwd = empty($_SERVER['PWD']) ? getcwd() : $_SERVER['PWD'];
-require_once (dirname(__FILE__) . "/autoload.php");
-//dd($argv);
-$command = $argv[1];
-
-$opt = explode(":", $command);
-
-if (!empty($opt[1])) {
-    $command = $opt[0];
-}
-
-if ($command) {
-
-    $log = new CLIColors();
-    if ($command == "-h" || $command == "help") {
-        echo "\n";
-        echo $log->getColoredString("--- HCORE ---", 'yellow', 'grey');
-        echo "\n";
-        echo $log->getColoredString("COMMANDS", "dark_gray");
-        echo "\n";
-        echo $log->getColoredString("php hcore migrate", "green");
-        echo "\t";
-        echo $log->getColoredString("Migrate all Models", "light_green");
-        echo "\n";
-
-        echo $log->getColoredString("php hcore cache:clean", "green");
-        echo "\t";
-        echo $log->getColoredString("Clear Autoloader Cache", "light_green");
-        echo "\n";
-        echo $log->getColoredString("---------\n", 'yellow', 'grey');
-
-        echo $log->getColoredString("php hcore view:build", "green");
-        echo "\t";
-        echo $log->getColoredString("View Build Dist", "light_green");
-        echo "\n";
-        echo $log->getColoredString("---------\n", 'yellow', 'grey');
-    }
-
-    if (file_exists(  dirname(__FILE__) . "/classes/Console/Commands/" . ucfirst($command) . "Command.php")) {
-        require dirname(__FILE__)  . "/classes/Console/Commands/" . ucfirst($command) . "Command.php";
-        $commandClass = ucfirst($command) . "Command";
-        /** @var BaseCommand $command */
-        $command = new $commandClass($opt);
-        $command->argv = $argv;
-        print $command->exec();
-    } else {
-        echo $log->getColoredString("HCORE :: Command not Found", "red");
-        echo $log->getColoredString("\n", "black");
-    }
-}
+php index.php
 
 
 

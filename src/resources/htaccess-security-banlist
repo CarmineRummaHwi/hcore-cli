@@ -1,0 +1,6 @@
+# Block Greasy Uploads Scanner
+<IfModule mod_rewrite.c>
+    ### BEGIN banlist-items
+    ### END banlist-items
+    RewriteRule (.*) - [F,L]
+</IfModule>

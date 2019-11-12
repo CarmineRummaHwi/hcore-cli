@@ -1,0 +1,4 @@
+<IfModule mod_headers.c>
+    ### BEGIN x-frame-items
+    ### END x-frame-items
+</IfModule>

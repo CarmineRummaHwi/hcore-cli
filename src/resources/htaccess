@@ -1,0 +1,53 @@
+RewriteEngine on
+Options -Indexes +FollowSymLinks -MultiViews
+
+AddType text/cache-manifest .manifest
+AddDefaultCharset UTF-8
+
+### OPTIONAL: Add htaccess-redirect-http
+### BEGIN http-redirect
+### END http-redirect
+
+### OPTIONAL: Add htaccess-redirect-https
+### BEGIN https-redirect
+### END https-redirect
+
+### OPTIONAL: Add htaccess-security-banlist
+### BEGIN security-banlist
+### END security-banlist
+
+### OPTIONAL: Add htaccess-security-cleaner
+### BEGIN security-cleaner
+### END security-cleaner
+
+### OPTIONAL: Add htaccess-cache
+### BEGIN htaccess-cache
+### END htaccess-cache
+
+<IfModule mod_rewrite.c>
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-l
+   RewriteRule ^(.*) /index.php [L,QSA]
+</IfModule>
+
+### REQUIRE: Add htaccess-security
+### BEGIN htaccess-security
+### END htaccess-security
+
+### OPTIONAL: Add htaccess-security-cors
+### BEGIN security-cors
+### END security-cors
+Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+
+### OPTIONAL: Add htaccess-security-x-frame-options
+### BEGIN x-frame-options
+### END x-frame-options
+
+### OPTIONAL: Add htaccess-security-content-security-policy
+### BEGIN security-policy
+### END security-policy
+
+### OPTIONAL: Add htaccess-security-advanced
+### BEGIN security-advanced
+### END security-advanced

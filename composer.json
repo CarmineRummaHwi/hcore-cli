@@ -4,13 +4,48 @@
     "type": "project",
     "authors": [
         {
+            "name": "Vincenzo Romano",
+            "email": "vincenzo.romano@healthtouch.eu"
+        },
+        {
             "name": "hwicarminerumma",
             "email": "carmine.rumma@healthtouch.eu"
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "apcu-autoloader": true
+    },
+    "require": {
+        "php": "^7.2",
+        "hcore/installer": "0.3.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "psr-4": {
+            "hcore\\cli\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://bitbucket.org/HealthwareGroup/hcore.git"
+        },
+        {
+            "type": "path",
+            "url": "/Data/Projects/hcore.installer"
+        },
+        {
+            "type": "git",
+            "url":  "https://bitbucket.org/cmsff/libs.git"
+        }
+    ],
     "bin": [
-        "hcore"
+        "src/hcore"
     ]
 }

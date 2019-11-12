@@ -6,6 +6,8 @@
  * Time: 16:13
  */
 
+namespace hcore\cli;
+
 class ComposerFactory {
 
     private $root;
