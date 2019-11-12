@@ -33,42 +33,47 @@ class BaseCommand {
         return $line;
     }
 
+
+
     public function checkHelp(){
        // print_r($this->argv[2]);die;
-       if ($this->argv[2] == "-h" || $this->argv[2] == "--help") {
+        if (isset($this->argv[2])) {
+            if ($this->argv[2] == "-h" || $this->argv[2] == "--help") {
 
-           $log = new CLIColors();
+                $log = new CLIColors();
 
-           if (!empty($this->description)) {
-               echo $log->getColoredString("Description:\n", "yellow");
-               echo $log->getColoredString("  " . $this->description . "\n\n");
-           }
+                if (!empty($this->description)) {
+                    echo $log->getColoredString("Description:\n", "yellow");
+                    echo $log->getColoredString("  " . $this->description . "\n\n");
+                }
 
-           echo $log->getColoredString("Usage:\n", "yellow");
-           echo $log->getColoredString($this->getUsage() . "\n\n");
-
-
-           echo $log->getColoredString("Arguments:\n", "yellow");
-           foreach ($this->arguments as $item) {
-
-               echo $log->getColoredString("  " . $item["name"] . "\t", "green");
-               echo $item["description"] . "\n";
-
-           }
-           echo "\n";
+                echo $log->getColoredString("Usage:\n", "yellow");
+                echo $log->getColoredString($this->getUsage() . "\n\n");
 
 
-           echo $log->getColoredString("Options:\n", "yellow");
-           foreach ($this->options_desc as $item) {
+                echo $log->getColoredString("Arguments:\n", "yellow");
+                foreach ($this->arguments as $item) {
 
-               echo $log->getColoredString("  " . $item["short"] . ",", "green");
-               echo $log->getColoredString(" " . $item["regular"] . "\t", "green");
-               echo $item["description"] . "\n";
+                    echo $log->getColoredString("  " . $item["name"] . "\t", "green");
+                    echo $item["description"] . "\n";
 
-           }
-           echo "\n";
-       }
-       die();
+                }
+                echo "\n";
+
+
+                echo $log->getColoredString("Options:\n", "yellow");
+                foreach ($this->options_desc as $item) {
+
+                    echo $log->getColoredString("  " . $item["short"] . ",", "green");
+                    echo $log->getColoredString(" " . $item["regular"] . "\t", "green");
+                    echo $item["description"] . "\n";
+
+                }
+                echo "\n";
+                die();
+            }
+
+        }
     }
 
 }

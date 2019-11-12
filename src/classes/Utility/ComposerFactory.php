@@ -40,6 +40,14 @@ class ComposerFactory {
     public function addAutoload($key, $value){
         $this->root["autoload"][$key] = $value;
     }
+    public function addScripts(){
+        $this->root["scripts"] = [
+            "post-update-cmd" => ["\\hcore\\Installer::setup"],
+            "post-autoload-dump" => ["\\hcore\\Installer::dumpautoload"],
+            "create-project-tree" => ["\\hcore\\Installer::createprojecttree"],
+            "build-preflights" => ["\\hcore\\Installer::buildpreflights"]
+        ];
+    }
 
     public function toJson(){
         return str_replace("\/", "/", json_encode($this->root, JSON_PRETTY_PRINT));

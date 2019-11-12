@@ -9,7 +9,7 @@ class CreateCommand extends BaseCommand {
     public $arguments   = [
         [
             "name"          => "name",
-            "description"   => "project name",
+            "description"   => "project name"
         ],
     ];
     public $options_desc = [
@@ -24,10 +24,47 @@ class CreateCommand extends BaseCommand {
             "description"   => "bitbucket password",
         ]
     ];
+
+
+
     public function exec()
     {
         $log = new CLIColors();
         //print_r ($this->options);
+
+        if (!isset($this->argv[2])){
+            echo "Nome del progetto non specificato.\n";
+            die;
+        }
+
+        //echo "<pre>";print_r($this->argv);
+
+
+        $bitbucketUser = "";
+        $bitbucketPassword = "";
+
+        $indexUser = array_search("-u", $this->argv);
+        if ($indexUser !== false){
+            $bitbucketUser = trim($this->argv[$indexUser + 1]);
+        }
+        $indexUser = array_search("-user", $this->argv);
+        if ($indexUser !== false){
+            $bitbucketUser = trim($this->argv[$indexUser + 1]);
+        }
+        $indexPwd = array_search("-p", $this->argv);
+        if ($indexPwd !== false){
+            $bitbucketPassword = trim($this->argv[$indexPwd + 1]);
+        }
+        $indexPwd = array_search("-password", $this->argv);
+        if ($indexPwd !== false){
+            $bitbucketPassword = trim($this->argv[$indexPwd + 1]);
+        }
+
+        if ($bitbucketUser == "" || $bitbucketPassword == ""){
+            echo "Dati Bitbucket obbligatori.\n";
+            die;
+        }
+
 
         if ($this->argv[2]){
             $cwd = $this->getCWD();
@@ -44,10 +81,40 @@ class CreateCommand extends BaseCommand {
             $composer->add("description", "hcore installer");
             $composer->addAuthor($authorItem);
             $composer->add("minimum-stability", "dev");
-            $composer->addRequire('hcore/core', '0.3.4');
+            $composer->addRequire('hcore/core', '^0.3');
+            $composer->addRequire('hcore/auth', '^0.3');
+            $composer->addRequire('hcore/api', '^0.3');
+            $composer->addRequire('hcore/notifier', '^0.3');
+            $composer->addRequire('hcore/installer', '^0.3');
+            $composer->addRequire('hcore/orm', '^0.3');
+            $composer->addRequire('hcore/dmr', '^0.3');
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => 'https://bitbucket.org/HealthwareGroup/hcore.git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.auth.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.api.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.notifier.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.installer.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.orm.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
+                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.dmr.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
@@ -60,6 +127,7 @@ class CreateCommand extends BaseCommand {
             $composer->addAutoload("classmap", array (
                 'src/',
             ));
+            $composer->addScripts();
 
             $fp = fopen($cwd . '/composer.json', 'w');
             fwrite($fp, $composer->toJson());
@@ -67,6 +135,11 @@ class CreateCommand extends BaseCommand {
 
             echo $log->getColoredString("composer.json created!", 'green');
             echo $log->getColoredString("\n", 'black');
+
+
+            $output = array();
+            echo shell_exec("composer.phar install");
+
 
         }
 
