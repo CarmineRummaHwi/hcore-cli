@@ -25,8 +25,6 @@ class CreateCommand extends BaseCommand {
         ]
     ];
 
-
-
     public function exec()
     {
         $log = new CLIColors();
@@ -120,6 +118,7 @@ class CreateCommand extends BaseCommand {
                 'type' => 'git',
                 'url' => 'https://bitbucket.org/cmsff/libs.git',
             ));
+            /*
             $composer->addAutoload("psr-4", array (
                 'hcore\\' => 'src/',
                 'hcore\\app\\conf\\' => "app/conf/"
@@ -127,6 +126,7 @@ class CreateCommand extends BaseCommand {
             $composer->addAutoload("classmap", array (
                 'src/',
             ));
+            */
             $composer->addScripts();
 
             $fp = fopen($cwd . '/composer.json', 'w');
