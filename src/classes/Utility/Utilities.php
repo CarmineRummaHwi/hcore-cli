@@ -3,7 +3,6 @@
 
 namespace hcore\cli;
 
-
 class Utilities
 {
 
@@ -41,6 +40,34 @@ class Utilities
                                     fi');
 
         return (trim($result) === '0') ? false : true;
+    }
+
+    /**
+     * @param string $needle
+     * @param array $argv
+     * @return string|null
+     */
+    public static function searchArgvValue(string $needle, array $argv): ?string {
+
+        // Strict search (ex. -uusername)
+        $indexArr = array_search($needle, $argv);
+        if ($indexArr !== false){
+            return trim($argv[$indexArr + 1]);
+        }
+
+
+        // Not strict search (ex. -uusername)
+        /*
+        $ret = array_keys(array_filter($argv, function($var) use ($needle){
+            return strpos($var, $needle) !== false;
+        }));
+
+        if (count($ret) > 0){
+            return trim(str_replace($needle, "", $argv[$ret[0]]));
+        }
+        */
+
+        return null;
     }
 
     public static function copyResource(string $src, string $dest): bool

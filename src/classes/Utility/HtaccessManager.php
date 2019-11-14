@@ -15,7 +15,11 @@ class HtaccessManager
     private $use_https;
     private $resource_path;
 
-    public static function getInstance($htaccess_path) {
+    /**
+     * @param string $htaccess_path
+     * @return HtaccessManager|null
+     */
+    public static function getInstance(string $htaccess_path) {
         if(file_exists($htaccess_path)){
             if(!self::$instance) {
                 self::$instance = new HtaccessManager();
@@ -33,7 +37,10 @@ class HtaccessManager
         return $this->htaccess;
     }
 
-    public function enableHttpRedirect() : void{
+    /**
+     * @return self
+     */
+    public function enableHttpRedirect() : self{
         $pattern = '/(?<=### BEGIN http-redirect)(?s)(.*?)(?=### END http-redirect)/m';
         $replace = <<<RULES
 \nRewriteCond %{HTTP_HOST} !^www\.
@@ -41,18 +48,26 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]\n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
         $this->use_www = true;
+        return $this;
     }
 
-    public function disableHttpRedirect() : void{
+    /**
+     * @return self
+     */
+    public function disableHttpRedirect() : self {
         $pattern = '/(?<=### BEGIN http-redirect)(?s)(.*?)(?=### END http-redirect)/m';
         $replace = <<<RULES
 \n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
         $this->use_www = false;
+        return $this;
     }
 
-    public function enableHttpsRedirect() : void{
+    /**
+     * @return self
+     */
+    public function enableHttpsRedirect() : self{
         $pattern = '/(?<=### BEGIN https-redirect)(?s)(.*?)(?=### END https-redirect)/m';
         $prefix = $this->use_www ? "www." : "";
         $replace = <<<RULES
@@ -64,15 +79,20 @@ RewriteRule ^(index\.(html|php))|(.*)$ https://{$prefix}%2/$3 [R=301,L]\n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
         $this->use_https = true;
+        return $this;
     }
 
-    public function disableHttpsRedirect() : void{
+    /**
+     * @return self
+     */
+    public function disableHttpsRedirect() : self {
         $pattern = '/(?<=### BEGIN https-redirect)(?s)(.*?)(?=### END https-redirect)/m';
         $replace = <<<RULES
 \n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
         $this->use_https = true;
+        return $this;
     }
 
     public function addToBanlist(string $referer) : void {

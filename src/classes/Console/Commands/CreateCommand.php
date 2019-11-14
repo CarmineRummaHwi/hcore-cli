@@ -27,58 +27,38 @@ class CreateCommand extends BaseCommand {
 
     public function exec()
     {
-        $log = new CLIColors();
-        //print_r ($this->options);
-
         if (!isset($this->argv[2])){
-            echo "Nome del progetto non specificato.\n";
+            console()->displayError("Project name is required");
             die;
         }
 
         if (false == \hcore\cli\Utilities::checkComposerInstalled()){
-            echo $log->getColoredString("Composer is not installed".PHP_EOL.PHP_EOL, 'red');
-            echo $log->getColoredString("Run this commands to install it:".PHP_EOL);
-            echo $log->getColoredString(' curl -sS https://getcomposer.org/installer | php'.PHP_EOL.
-                ' php composer.phar install'.PHP_EOL, 'red');
-            echo $log->getColoredString("\n", 'black');
+            console()->displayError("Composer is not installed")
+                     ->space(2)->d("Run this commands to install it:" . PHP_EOL)
+                     ->space(2)->d('curl -sS https://getcomposer.org/installer | php' . PHP_EOL, 'red')
+                     ->space(2)->d('php composer.phar install' . PHP_EOL, 'red')
+                     ->nl();
             die;
         }
 
-        //echo "<pre>";print_r($this->argv);
+        $bitbucketUser      = search_argv_val("-u", $this->argv) || search_argv_val("--user", $this->argv);
+        $bitbucketPassword  = search_argv_val("-p", $this->argv) || search_argv_val("--password", $this->argv);
 
-
-        $bitbucketUser = "";
-        $bitbucketPassword = "";
-
-        $indexUser = array_search("-u", $this->argv);
-        if ($indexUser !== false){
-            $bitbucketUser = trim($this->argv[$indexUser + 1]);
-        }
-        $indexUser = array_search("--user", $this->argv);
-        if ($indexUser !== false){
-            $bitbucketUser = trim($this->argv[$indexUser + 1]);
-        }
-        $indexPwd = array_search("-p", $this->argv);
-        if ($indexPwd !== false){
-            $bitbucketPassword = trim($this->argv[$indexPwd + 1]);
-        }
-        $indexPwd = array_search("--password", $this->argv);
-        if ($indexPwd !== false){
-            $bitbucketPassword = trim($this->argv[$indexPwd + 1]);
-        }
-
-        if ($bitbucketUser == "" || $bitbucketPassword == ""){
-            echo "Dati Bitbucket obbligatori.\n";
+        if (!$bitbucketUser || !$bitbucketPassword){
+            console()->displayError("BitBucket Access is required");
             die;
         }
-
 
         if ($this->argv[2]){
             $cwd = $this->getCWD();
-
-            $authorItem = array(
-                'name' => 'Vincenzo Romano',
-                'email' => 'vincenzo.romano@healthtouch.eu',
+            $authorItems     = array();
+            $authorItems[]   = array(
+                'name'  => 'Carmine Rumma',
+                'email' => 'carmine.rumma@healthwareinternational.com',
+            );
+            $authorItems[]   = array(
+                'name'  => 'Vincenzo Romano',
+                'email' => 'vincenzo.romano@healthwareinternational.com',
             );
 
             $composer = new \hcore\cli\ComposerFactory();
@@ -86,7 +66,8 @@ class CreateCommand extends BaseCommand {
             $composer->add("type", "library");
             $composer->add("version", "1.0");
             $composer->add("description", "hcore installer");
-            $composer->addAuthor($authorItem);
+            //$composer->addAuthor($authorItem[0]);
+            //$composer->addAuthor($authorItem[1]);
             $composer->add("minimum-stability", "dev");
             $composer->addRequire('hcore/core', '^0.3');
             $composer->addRequire('hcore/auth', '^0.3');
@@ -142,12 +123,10 @@ class CreateCommand extends BaseCommand {
             fwrite($fp, $composer->toJson());
             fclose($fp);
 
-            echo $log->getColoredString("composer.json created!", 'green');
-            echo $log->getColoredString("\n", 'black');
-
+            console()->displaySuccess("composer.json created!");
 
             $output = array();
-            echo shell_exec("composer.phar install");
+            echo shell_exec("composer install");
         }
 
     }

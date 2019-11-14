@@ -4,19 +4,14 @@ set_time_limit(0);
 
 $cwd = empty($_SERVER['PWD']) ? getcwd() : $_SERVER['PWD'];
 require_once (dirname(__FILE__) . "/autoload.php");
-//dd($argv);
-$command = $argv[1];
+require_once (dirname(__FILE__) . "/bootstrap.php");
 
+$command = $argv[1];
 $opt = explode(":", $command);
 
-$log = new CLIColors();
-
+//$log = new CLIColors();
 if (!empty($opt[1])) {
     $command = $opt[0];
-}else{
-    //echo $log->getColoredString("Usage:\n", "yellow");
-    //echo "  command [options] [arguments]\n\n";
-    //printAvailableCommands();
 }
 
 if ($command) {
@@ -35,21 +30,32 @@ if ($command) {
         $command->checkHelp();
         print $command->exec();
     } else {
-        echo $log->getColoredString("HCORE :: Command not Found", "red");
-        echo $log->getColoredString("\n", "black");
+        console()->displayError("HCORE :: Command not Found", "red")->nl();
     }
+
+} else {
+    // No command Spec
+    printAvailableCommands();
+    die();
 }
 
 function printAvailableCommands() {
-    $log = new CLIColors();
-    echo $log->getColoredString("Usage:\n", "yellow");
-    echo "  command [options] [arguments]\n\n";
 
-    echo $log->getColoredString("Options:\n", "yellow");
-    echo $log->getColoredString("  -h, --help", "green");
-    echo "\tDisplay this Help message\n\n";
+    console()->display("Usage:", "yellow")
+             ->nl()
+             ->space(2)
+             ->display("command [options] [arguments]");
 
-    echo $log->getColoredString("Available Commands:\n", "yellow");
+    console()->nl(2);
+
+    console()->display("Options:", "yellow")
+             ->space(2)
+             ->display("-h, --help", "green\tDisplay this Help message");
+
+    console()->nl(2);
+
+    console()->display("Available Commands:", "yellow")
+             ->nl();
     $res = scandir(dirname(__FILE__) . "/classes/Console/Commands/");
     $commands = [];
     foreach($res as $item){
@@ -62,8 +68,8 @@ function printAvailableCommands() {
                 //print_r($command);
                 //$command->getCommandHelp();
 
-                echo $log->getColoredString("  " . $command->name , "green");
-                echo $log->getColoredString("\t" . $command->description . "\n");
+                console()->display("  " . $command->name , "green");
+                console()->display("\t" . $command->description . "\n");
 
             } else {
 

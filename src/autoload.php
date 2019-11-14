@@ -1,5 +1,7 @@
 <?php
 /**
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore
  * Created by PhpStorm.
  * User: crumma
  * Date: 2019-09-19
@@ -8,15 +10,15 @@
 
 
 define ("CLASSES_PATH", dirname(__FILE__) . "/classes");
-define ("DOC_ROOT", dirname(__FILE__));
-spl_autoload_register(function ($class) {
-    //$file = str_replace('\\', MODELS_PATH, $class).'.php';
+define ("DOC_ROOT",     dirname(__FILE__));
 
+spl_autoload_register(function ($class) {
+
+    // Support for namespaces
     if (strpos($class, '\\') !== false) {
         $parts = explode('\\', $class);
         $class = end($parts); // . '.php';
     }
-
 
     if (file_exists(CLASSES_PATH . "/" . $class . ".php")) {
         require CLASSES_PATH . "/" . $class . ".php";

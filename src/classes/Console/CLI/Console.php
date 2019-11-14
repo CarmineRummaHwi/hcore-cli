@@ -1,6 +1,10 @@
 <?php
+/**
+ * Class Console
+ */
+namespace hcore\cli;
+class Console {
 
-class CLIColors {
     private $foreground_colors = array();
     private $background_colors = array();
 
@@ -33,8 +37,7 @@ class CLIColors {
         $this->background_colors['light_gray'] = '47';
     }
 
-    // Returns colored string
-    public function getColoredString($string, $foreground_color = null, $background_color = null) {
+    private function getColoredString($string, $foreground_color = null, $background_color = null) {
         $colored_string = "";
 
         // Check if given foreground color found
@@ -52,14 +55,68 @@ class CLIColors {
         return $colored_string;
     }
 
-    // Returns all foreground color names
+    /**
+     * Get Foreground Colors
+     * @return array
+     */
     public function getForegroundColors() {
         return array_keys($this->foreground_colors);
     }
 
-    // Returns all background color names
+    /**
+     * Get Background Colors
+     * @return array
+     */
     public function getBackgroundColors() {
         return array_keys($this->background_colors);
+    }
+
+    /**
+     * Display Message
+     * @example display('hello', 'green')
+     * @param string $message
+     * @param string|null $foreground_color
+     * @param string|null $background_color
+     * @return string
+     */
+    public function display(string $message, string $foreground_color = null, string $background_color = null){
+        print $this->getColoredString($message, $foreground_color, $background_color);
+        return $this;
+    }
+
+    /**
+     * short Display Message
+     * @param string $message
+     * @param string|null $foreground_color
+     * @param string|null $background_color
+     * @return $this
+     */
+    public function d(string $message, string $foreground_color = null, string $background_color = null){
+        print $this->getColoredString($message, $foreground_color, $background_color);
+        return $this;
+    }
+
+    public function nl(int $lines = 1){
+        for ($i = 0; $i < $lines; $i++) {
+            echo "\n";
+        }
+        return $this;
+    }
+    public function space(int $rows = 1){
+        for ($i = 0; $i < $rows; $i++) {
+            print " ";
+        }
+        return $this;
+    }
+
+    public function displayError(string $message){
+        print $this->getColoredString($message . PHP_EOL . PHP_EOL, 'red');
+        return $this;
+    }
+
+    public function displaySuccess(string $message){
+        print $this->getColoredString($message . PHP_EOL . PHP_EOL, 'green');
+        return $this;
     }
 }
 

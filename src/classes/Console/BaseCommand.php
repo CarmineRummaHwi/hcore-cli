@@ -8,6 +8,7 @@
 
 class BaseCommand {
 
+    const VERSION = '1.0';
     public $name;
     public $options;
     public $argv;
@@ -33,41 +34,51 @@ class BaseCommand {
         return $line;
     }
 
+
     public function checkHelp(){
-       // print_r($this->argv[2]);die;
+
         if (isset($this->argv[2])) {
             if ($this->argv[2] == "-h" || $this->argv[2] == "--help") {
 
-                $log = new CLIColors();
-
                 if (!empty($this->description)) {
-                    echo $log->getColoredString("Description:\n", "yellow");
-                    echo $log->getColoredString("  " . $this->description . "\n\n");
+                    console()->d("Description:", "yellow")
+                             ->nl()
+                             ->space(2)
+                             ->d($this->description)
+                             ->nl(2);
                 }
 
-                echo $log->getColoredString("Usage:\n", "yellow");
-                echo $log->getColoredString($this->getUsage() . "\n\n");
+                console()->d("Usage:", "yellow")
+                         ->nl()
+                         ->d($this->getUsage() . "\n\n");
 
 
-                echo $log->getColoredString("Arguments:\n", "yellow");
+                console()->d("Arguments:", "yellow")
+                         ->nl();
+
                 foreach ($this->arguments as $item) {
 
-                    echo $log->getColoredString("  " . $item["name"] . "\t", "green");
-                    echo $item["description"] . "\n";
+                    console()->space(2)
+                             ->d($item["name"], "green")
+                             ->d("\t")
+                             ->d($item["description"])->nl();
 
                 }
-                echo "\n";
+                console()->nl();
 
 
-                echo $log->getColoredString("Options:\n", "yellow");
+                console()->d("Options:\n", "yellow");
                 foreach ($this->options_desc as $item) {
 
-                    echo $log->getColoredString("  " . $item["short"] . ",", "green");
-                    echo $log->getColoredString(" " . $item["regular"] . "\t", "green");
-                    echo $item["description"] . "\n";
+                    console()->space(2)
+                             ->d($item["short"] . ",", "green")
+                             ->d(" " . $item["regular"], "green")
+                             ->d("\t")
+                             ->d($item["description"])
+                             ->nl();
 
                 }
-                echo "\n";
+                console()->nl();
                 die();
             }
 
