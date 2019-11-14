@@ -19,7 +19,7 @@ class HtaccessManager
      * @param string $htaccess_path
      * @return HtaccessManager|null
      */
-    public static function getInstance(string $htaccess_path) {
+    public static function getInstance(string $htaccess_path) : ?self {
         if(file_exists($htaccess_path)){
             if(!self::$instance) {
                 self::$instance = new HtaccessManager();
@@ -103,7 +103,7 @@ RULES;
         $base_banlist = trim(Utilities::getMatch($pattern, $this->htaccess));
 
         if(false !== strpos($base_banlist, "RewriteCond %{HTTP_REFERER} {$referer} [NC")){
-            return;
+            return $this;
         }
 
         if(strlen($base_banlist) == 0){
@@ -296,7 +296,7 @@ RULES;
             $optionlist .= $xframe_item;
         }else{
             if(false !== strpos($optionlist, "Header always set X-Frame-Options {$domain}")){
-                return;
+                return $this;
             }
             $optionlist .= $xframe_item;
         }
@@ -317,7 +317,7 @@ RULES;
         $optionlist = trim(Utilities::getMatch($subpattern, $base_xframe));
 
         if(strlen($optionlist) == 0) {
-            return;
+            return $this;
         }
 
         $optionlist = str_replace("\tHeader always set X-Frame-Options {$domain}\n", "", $optionlist);
