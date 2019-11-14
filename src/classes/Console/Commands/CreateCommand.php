@@ -54,7 +54,7 @@ class CreateCommand extends BaseCommand {
         if ($indexUser !== false){
             $bitbucketUser = trim($this->argv[$indexUser + 1]);
         }
-        $indexUser = array_search("-user", $this->argv);
+        $indexUser = array_search("--user", $this->argv);
         if ($indexUser !== false){
             $bitbucketUser = trim($this->argv[$indexUser + 1]);
         }
@@ -62,7 +62,7 @@ class CreateCommand extends BaseCommand {
         if ($indexPwd !== false){
             $bitbucketPassword = trim($this->argv[$indexPwd + 1]);
         }
-        $indexPwd = array_search("-password", $this->argv);
+        $indexPwd = array_search("--password", $this->argv);
         if ($indexPwd !== false){
             $bitbucketPassword = trim($this->argv[$indexPwd + 1]);
         }

@@ -33,8 +33,6 @@ class BaseCommand {
         return $line;
     }
 
-
-
     public function checkHelp(){
        // print_r($this->argv[2]);die;
         if (isset($this->argv[2])) {
