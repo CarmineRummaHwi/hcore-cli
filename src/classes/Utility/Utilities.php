@@ -7,15 +7,40 @@ namespace hcore\cli;
 class Utilities
 {
 
+    /**
+     * Pretty Dump an Array
+     * @param array $arr
+     */
     public static function ppp(array $arr):void {
         echo "<pre>";
         print_r($arr);
     }
 
+    /**
+     * Pretty Dump an Array and Die
+     * @param array $arr
+     */
     public static function ddd(array $arr):void {
         echo "<pre>";
         print_r($arr);
         die("END");
+    }
+
+    /**
+     * Check if Composer is installed
+     * @return bool
+     */
+    public static function checkComposerInstalled():bool {
+
+        $result = shell_exec('composer -v > /dev/null 2>&1
+                                    COMPOSER=$?
+                                    if [[ $COMPOSER -ne 0 ]]; then
+                                        echo "0"
+                                    else
+                                        echo "1"
+                                    fi');
+
+        return (trim($result) === '0') ? false : true;
     }
 
     public static function copyResource(string $src, string $dest): bool
