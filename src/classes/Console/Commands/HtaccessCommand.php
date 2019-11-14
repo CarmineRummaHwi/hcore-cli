@@ -1,7 +1,5 @@
 <?php
 
-
-
 class HtaccessCommand extends BaseCommand {
 
     public $name        = "htaccess";
@@ -27,8 +25,6 @@ class HtaccessCommand extends BaseCommand {
 
     public function exec()
     {
-       // ppp($this->options);
-       // ddd($this->argv);
 
         $cwd = $this->getCWD();
         /** @var \hcore\cli\HtaccessManager */
@@ -40,16 +36,12 @@ class HtaccessCommand extends BaseCommand {
                 $htaccessManager->enableHttpRedirect()
                                 ->save();
                 console()->displaySuccess("Http Redirect enabled");
-
             } elseif ($action == "disable"){
                 $htaccessManager->disableHttpRedirect()
                                 ->save();
                 console()->displaySuccess("Http Redirect disabled");
-
             } else {
                 console()->displayError("Invalid action spec.");
-
-
             }
         }
 
@@ -59,14 +51,38 @@ class HtaccessCommand extends BaseCommand {
                 $htaccessManager->enableHttpsRedirect()
                                 ->save();
                 console()->displaySuccess("Https Redirect enabled");
-
             } elseif ($action == "disable"){
                 $htaccessManager->disableHttpsRedirect()
                                 ->save();
                 console()->displaySuccess("Https Redirect disabled");
-
             } else {
                 console()->displayError("Invalid action spec.");
+            }
+        }
+
+        if ($this->options[1] == "banlist"){
+            $action = search_argv_val("-a", $this->argv);
+            $action = empty($action) ? search_argv_val("--add", $this->argv) : $action;
+
+            if (!$action) {
+                console()->displayError("ban list item missing");
+                die();
+            }else{
+                $htaccessManager->addToBanlist($action)
+                                ->save();
+                console()->displaySuccess($action . " added to the ban list");
+            }
+
+            $action = search_argv_val("-r", $this->argv);
+            $action = empty($action) ? search_argv_val("--remove", $this->argv) : $action;
+
+            if (!$action) {
+                console()->displayError("ban list item missing");
+                die();
+            }else{
+                $htaccessManager->addToBanlist($action)
+                    ->save();
+                console()->displaySuccess($action . " removed from the ban list");
             }
         }
     }

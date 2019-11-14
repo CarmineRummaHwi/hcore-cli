@@ -95,7 +95,10 @@ RULES;
         return $this;
     }
 
-    public function addToBanlist(string $referer) : void {
+    /**
+     * @return self
+     */
+    public function addToBanlist(string $referer) : self {
         $pattern = '/(?<=### BEGIN security-banlist)(?s)(.*?)(?=### END security-banlist)/m';
         $base_banlist = trim(Utilities::getMatch($pattern, $this->htaccess));
 
@@ -119,9 +122,13 @@ RULES;
             }
         }
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $base_banlist);
+        return $this;
     }
 
-    public function removeFromBanlist(string $referer) : void {
+    /**
+     * @return self
+     */
+    public function removeFromBanlist(string $referer) : self {
         $subpattern = '/(?<=### BEGIN banlist-items)(?s)(.*?)(?=### END banlist-items)/m';
         $current_list = Utilities::getMatch($subpattern, $this->htaccess);
 
@@ -136,65 +143,101 @@ RULES;
                 $this->htaccess = Utilities::replaceMatch($subpattern, $this->htaccess, $current_list);
             }
         }
+        return $this;
     }
 
-    public function enableSecurityCleaner() : void{
+    /**
+     * @return self
+     */
+    public function enableSecurityCleaner() : self{
         $pattern = '/(?<=### BEGIN security-cleaner)(?s)(.*?)(?=### END security-cleaner)/m';
         $replace = "\n".trim(file_get_contents($this->resource_path . "/htaccess-security-cleaner"))."\n";
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function disableSecurityCleaner() : void{
+    /**
+     * @return self
+     */
+    public function disableSecurityCleaner() : self{
         $pattern = '/(?<=### BEGIN security-cleaner)(?s)(.*?)(?=### END security-cleaner)/m';
         $replace = <<<RULES
 \n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function enableHtaccessCache() : void{
+    /**
+     * @return self
+     */
+    public function enableHtaccessCache() : self{
         $pattern = '/(?<=### BEGIN htaccess-cache)(?s)(.*?)(?=### END htaccess-cache)/m';
         $replace = file_get_contents($this->resource_path . "/htaccess-cache");
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function disableHtaccessCache() : void{
+    /**
+     * @return self
+     */
+    public function disableHtaccessCache() : self{
         $pattern = '/(?<=### BEGIN htaccess-cache)(?s)(.*?)(?=### END htaccess-cache)/m';
         $replace = <<<RULES
 \n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function enableHtaccessSecurity() : void{
+    /**
+     * @return self
+     */
+    public function enableHtaccessSecurity() : self{
         $pattern = '/(?<=### BEGIN htaccess-security)(?s)(.*?)(?=### END htaccess-security)/m';
         $replace = "\n".trim(file_get_contents($this->resource_path . "/htaccess-security"))."\n";
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function disableHtaccessSecurity() : void{
+    /**
+     * @return self
+     */
+    public function disableHtaccessSecurity() : self{
         $pattern = '/(?<=### BEGIN htaccess-security)(?s)(.*?)(?=### END htaccess-security)/m';
         $replace = <<<RULES
 \n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function enableHtaccessSecurityAdvanced() : void{
+    /**
+     * @return self
+     */
+    public function enableHtaccessSecurityAdvanced() : self{
         $pattern = '/(?<=### BEGIN security-advanced)(?s)(.*?)(?=### END security-advanced)/m';
         $replace = "\n".trim(file_get_contents($this->resource_path . "/htaccess-security-advanced"))."\n";
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function disableHtaccessSecurityAdvanced() : void{
+    /**
+     * @return self
+     */
+    public function disableHtaccessSecurityAdvanced() : self{
         $pattern = '/(?<=### BEGIN security-advanced)(?s)(.*?)(?=### END security-advanced)/m';
         $replace = <<<RULES
 \n
 RULES;
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function addCorsRule($domain) : void{
+    /**
+     * @return self
+     */
+    public function addCorsRule($domain) : self{
         $pattern = '/(?<=### BEGIN security-cors)(?s)(.*?)(?=### END security-cors)/m';
         $cors_string = trim(Utilities::getMatch($pattern, $this->htaccess));
         if(strlen($cors_string) == 0){
@@ -209,9 +252,13 @@ RULES;
                 $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $cors_string);
             }
         }
+        return $this;
     }
 
-    public function removeCorsRule($domain) : void{
+    /**
+     * @return self
+     */
+    public function removeCorsRule($domain) : self{
         $pattern = '/(?<=### BEGIN security-cors)(?s)(.*?)(?=### END security-cors)/m';
         $cors_string = trim(Utilities::getMatch($pattern, $this->htaccess));
         if(strlen($cors_string) > 0){
@@ -227,9 +274,13 @@ RULES;
                 $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $cors_string);
             }
         }
+        return $this;
     }
 
-    public function addXFrameOptions($domain) : void{
+    /**
+     * @return self
+     */
+    public function addXFrameOptions($domain) : self{
         $pattern = '/(?<=### BEGIN x-frame-options)(?s)(.*?)(?=### END x-frame-options)/m';
         $base_xframe = trim(Utilities::getMatch($pattern, $this->htaccess));
 
@@ -252,9 +303,13 @@ RULES;
 
         $base_xframe = Utilities::replaceMatch($subpattern, $base_xframe, "\n\t".$optionlist."\n\t");
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, "\n".$base_xframe."\n");
+        return $this;
     }
 
-    public function removeXFrameOptions($domain) : void{
+    /**
+     * @return self
+     */
+    public function removeXFrameOptions($domain) : self{
         $pattern = '/(?<=### BEGIN x-frame-options)(?s)(.*?)(?=### END x-frame-options)/m';
         $base_xframe = trim(Utilities::getMatch($pattern, $this->htaccess));
 
@@ -266,18 +321,27 @@ RULES;
         }
 
         $optionlist = str_replace("\tHeader always set X-Frame-Options {$domain}\n", "", $optionlist);
+        return $this;
     }
 
-    public function enableSecurityPolicy() : void{
+    /**
+     * @return self
+     */
+    public function enableSecurityPolicy() : self{
         $pattern = '/(?<=### BEGIN security-policy)(?s)(.*?)(?=### END security-policy)/m';
         $replace = "\n".trim(file_get_contents($this->resource_path . "/htaccess-content-security-policy"))."\n";
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
-    public function disableSecurityPolicy() : void{
+    /**
+     * @return self
+     */
+    public function disableSecurityPolicy() : self{
         $pattern = '/(?<=### BEGIN security-policy)(?s)(.*?)(?=### END security-policy)/m';
         $replace = "\n";
         $this->htaccess = Utilities::replaceMatch($pattern, $this->htaccess, $replace);
+        return $this;
     }
 
     public function save() : void{
