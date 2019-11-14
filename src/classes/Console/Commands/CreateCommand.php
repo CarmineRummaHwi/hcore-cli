@@ -41,8 +41,11 @@ class CreateCommand extends BaseCommand {
             die;
         }
 
-        $bitbucketUser      = search_argv_val("-u", $this->argv) || search_argv_val("--user", $this->argv);
-        $bitbucketPassword  = search_argv_val("-p", $this->argv) || search_argv_val("--password", $this->argv);
+        $bitbucketUser = search_argv_val("-u", $this->argv);
+        $bitbucketUser = empty($bitbucketUser) ? search_argv_val("--user", $this->argv) : $bitbucketUser;
+
+        $bitbucketPassword = search_argv_val("-p", $this->argv);
+        $bitbucketPassword = empty($bitbucketUser) ? search_argv_val("--password", $this->argv) : $bitbucketPassword;
 
         if (!$bitbucketUser || !$bitbucketPassword){
             console()->displayError("BitBucket Access is required");
@@ -62,7 +65,7 @@ class CreateCommand extends BaseCommand {
             );
 
             $composer = new \hcore\cli\ComposerFactory();
-            $composer->add("name", $this->argv[2]);
+            $composer->add("name", "hcore/" . $this->argv[2]);
             $composer->add("type", "library");
             $composer->add("version", "1.0");
             $composer->add("description", "hcore installer");
