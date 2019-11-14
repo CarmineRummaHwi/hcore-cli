@@ -5,7 +5,7 @@
 class CreateCommand extends BaseCommand {
 
     public $name        = "create";
-    public $description = "Hcore install - hcore create <name>";
+    public $description = "HCore install - hcore create <name>";
     public $arguments   = [
         [
             "name"          => "name",
@@ -15,12 +15,12 @@ class CreateCommand extends BaseCommand {
     public $options_desc = [
         [
             "short"         => "-u",
-            "regular"       => "-user",
+            "regular"       => "--user",
             "description"   => "bitbucket username",
         ],
         [
             "short"         => "-p",
-            "regular"       => "-password",
+            "regular"       => "--password",
             "description"   => "bitbucket password",
         ]
     ];
@@ -32,6 +32,15 @@ class CreateCommand extends BaseCommand {
 
         if (!isset($this->argv[2])){
             echo "Nome del progetto non specificato.\n";
+            die;
+        }
+
+        if (false == \hcore\cli\Utilities::checkComposerInstalled()){
+            echo $log->getColoredString("Composer is not installed".PHP_EOL.PHP_EOL, 'red');
+            echo $log->getColoredString("Run this commands to install it:".PHP_EOL);
+            echo $log->getColoredString(' curl -sS https://getcomposer.org/installer | php'.PHP_EOL.
+                ' php composer.phar install'.PHP_EOL, 'red');
+            echo $log->getColoredString("\n", 'black');
             die;
         }
 
@@ -139,8 +148,6 @@ class CreateCommand extends BaseCommand {
 
             $output = array();
             echo shell_exec("composer.phar install");
-
-
         }
 
     }
