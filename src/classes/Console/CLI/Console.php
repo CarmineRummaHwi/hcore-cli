@@ -9,7 +9,6 @@ class Console {
     private $background_colors = array();
 
     public function __construct() {
-        // Set up shell colors
         $this->foreground_colors['black'] = '0;30';
         $this->foreground_colors['dark_gray'] = '1;30';
         $this->foreground_colors['blue'] = '0;34';
@@ -111,6 +110,7 @@ class Console {
 
     public function displayError(string $message){
         print $this->getColoredString($message . PHP_EOL . PHP_EOL, 'red');
+        print $this->getColoredString(""); // Fix the red cursor
         return $this;
     }
 

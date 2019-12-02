@@ -43,6 +43,57 @@ class Utilities
     }
 
     /**
+     * Check if NodeJs is installed
+     * @return bool
+     */
+    public static function checkNodeJsInstalled():bool {
+
+        $result = shell_exec('node -v > /dev/null 2>&1
+                                    NODE=$?
+                                    if [[ $NODE -ne 0 ]]; then
+                                        echo "0"
+                                    else
+                                        echo "1"
+                                    fi');
+
+        return (trim($result) === '0') ? false : true;
+    }
+
+    /**
+     * Check if npm is installed
+     * @return bool
+     */
+    public static function checkNPMInstalled():bool {
+
+        $result = shell_exec('npm -v > /dev/null 2>&1
+                                    NPM=$?
+                                    if [[ $NPM -ne 0 ]]; then
+                                        echo "0"
+                                    else
+                                        echo "1"
+                                    fi');
+
+        return (trim($result) === '0') ? false : true;
+    }
+
+    /**
+     * Check if newman is installed
+     * @return bool
+     */
+    public static function checkNewmanInstalled():bool {
+
+        $result = shell_exec('newman -v > /dev/null 2>&1
+                                    NEWMAN=$?
+                                    if [[ $NEWMAN -ne 0 ]]; then
+                                        echo "0"
+                                    else
+                                        echo "1"
+                                    fi');
+
+        return (trim($result) === '0') ? false : true;
+    }
+
+    /**
      * @param string $needle
      * @param array $argv
      * @return string|null

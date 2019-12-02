@@ -9,12 +9,14 @@
 class BaseCommand {
 
     const VERSION = '1.0';
+    const COMMAND = 'hcore';
     public $name;
     public $options;
     public $argv;
     public $description;
     public $arguments;
     public $options_desc;
+    public $usage = [];
 
     public function __construct($option = array())
     {
@@ -30,15 +32,23 @@ class BaseCommand {
     }
 
     public function getUsage(){
-        $line = "  " . $this->name . " " . ((sizeof($this->options_desc) > 0) ? '[options]' : ' ') . ' ' . ((sizeof($this->arguments) > 0) ? '[<arguments>]' : ' ');
+        $line = "";
+        if (sizeof($this->usage) > 0){
+            foreach($this->usage as $usecase) {
+
+                console()->display(self::COMMAND . " " . $this->name . " " . $usecase["action"], "green")
+                         ->d("\t")->d($usecase["description"])->nl();
+            }
+        } else {
+            $line = "  " . $this->name . " " . ((sizeof($this->options_desc) > 0) ? '[options]' : ' ') . ' ' . ((sizeof($this->arguments) > 0) ? '[<arguments>]' : ' ');
+        }
         return $line;
     }
-
 
     public function checkHelp(){
 
         if (isset($this->argv[2])) {
-            if ($this->argv[2] == "-h" || $this->argv[2] == "--help") {
+            if ($this->argv[2] == "-h" || $this->argv[2] == "--help" || $this->argv[2] == "help") {
 
                 if (!empty($this->description)) {
                     console()->d("Description:", "yellow")
@@ -49,8 +59,10 @@ class BaseCommand {
                 }
 
                 console()->d("Usage:", "yellow")
-                         ->nl()
-                         ->d($this->getUsage() . "\n\n");
+                         ->nl();
+
+                $this->getUsage();
+                console()->nl();
 
 
                 console()->d("Arguments:", "yellow")
@@ -66,19 +78,20 @@ class BaseCommand {
                 }
                 console()->nl();
 
+                if (sizeof($this->options_desc) > 0) {
+                    console()->d("Options:\n", "yellow");
+                    foreach ($this->options_desc as $item) {
 
-                console()->d("Options:\n", "yellow");
-                foreach ($this->options_desc as $item) {
+                        console()->space(2)
+                            ->d($item["short"] . ",", "green")
+                            ->d(" " . $item["regular"], "green")
+                            ->d("\t")
+                            ->d($item["description"])
+                            ->nl();
 
-                    console()->space(2)
-                             ->d($item["short"] . ",", "green")
-                             ->d(" " . $item["regular"], "green")
-                             ->d("\t")
-                             ->d($item["description"])
-                             ->nl();
-
+                    }
+                    console()->nl();
                 }
-                console()->nl();
                 die();
             }
 

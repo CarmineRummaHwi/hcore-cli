@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+/**
+ * @author HealthwareIntl | Carmine Rumma
+ * @type {{run}|*}
+ */
+
+const newman = require('newman');
+const fs = require('fs');
+const childProcessExec = require('child_process').exec;
+const util = require('util');
+
+const exec = util.promisify(childProcessExec);
+checkBranch();
+
+async function checkBranch(){
+    try{
+        branchName = await getCurrentBranch();
+        //console.log(branchName);
+    } catch (e){
+
+    }
+}
+
+async function getCurrentBranch() {
+
+    const branchesOutput = await exec('git branch');
+    if( branchesOutput.stderr){
+        throw new Error(stderr);
+    }
+    const branches = branchesOutput.stdout;
+    return branches.split('\n').find(b => b.trim().charAt(0) === '*' ).trim().substring(2);
+
+}
+
+let collectionPath = require(process.cwd() + "{{COLLECTION}}");
+let environmentPath = require(process.cwd() + "{{ENVIRONMENT}}");
+
+if (fs.existsSync(collectionPath) && fs.existsSync(environmentPath)) {
+
+    newman.run({
+        collection: collectionPath,
+        environment: environmentPath
+    }).on('start', function (err, args) {
+        console.log('API test collection Running...');
+    }).on('done', function (err, summary) {
+        if (err || summary.error) {
+            console.error('collection run encountered an error.');
+        }
+        else {
+            let failed = summary.run.stats.assertions.failed;
+            if (failed > 0){
+                console.log('API test failed! (', failed, ').');
+                console.log("Please run 'hcore api-tests:run' to see the details.");
+                console.log('Your commit will be rejected.');
+                process.exit(1);
+            } else {
+                console.log("success");
+            }
+        }
+    });
+
+}

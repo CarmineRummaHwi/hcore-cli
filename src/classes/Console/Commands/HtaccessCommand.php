@@ -25,6 +25,10 @@ class HtaccessCommand extends BaseCommand {
 
     public function exec()
     {
+        if (!isset($this->options[1])){
+            console()->displayError("Project name is required");
+            die;
+        }
 
         $cwd = $this->getCWD();
         /** @var \hcore\cli\HtaccessManager */

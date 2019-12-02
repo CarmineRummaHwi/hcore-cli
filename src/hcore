@@ -1,15 +1,21 @@
 #!/usr/bin/env php
 <?php
+/**
+ * @author HealthwareIntl | Carmine Rumma
+ *
+ */
+
 set_time_limit(0);
 
 $cwd = empty($_SERVER['PWD']) ? getcwd() : $_SERVER['PWD'];
 require_once (dirname(__FILE__) . "/autoload.php");
 require_once (dirname(__FILE__) . "/bootstrap.php");
+$command = "";
+if (isset($argv[1])){
+    $command = $argv[1];
+    $opt = explode(":", $command);
+}
 
-$command = $argv[1];
-$opt = explode(":", $command);
-
-//$log = new CLIColors();
 if (!empty($opt[1])) {
     $command = $opt[0];
 }
