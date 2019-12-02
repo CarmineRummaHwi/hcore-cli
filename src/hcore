@@ -27,6 +27,11 @@ if ($command) {
         die();
     }
 
+    if ($command == "-V" || $command == "--version") {
+        getApplicationVersion();
+        die();
+    }
+
     if (file_exists(dirname(__FILE__) . "/classes/Console/Commands/" . ucfirst($command) . "Command.php")) {
         require dirname(__FILE__)  . "/classes/Console/Commands/" . ucfirst($command) . "Command.php";
         $commandClass = ucfirst($command) . "Command";
@@ -55,8 +60,12 @@ function printAvailableCommands() {
     console()->nl(2);
 
     console()->display("Options:", "yellow")
+             ->nl()
              ->space(2)
-             ->display("-h, --help", "green\tDisplay this Help message");
+             ->display("-h, --help", "green")->d("\tDisplay this Help message")
+             ->nl()
+             ->space(2)
+             ->display("-V, --version", "green")->d("\tDisplay this application version");
 
     console()->nl(2);
 
@@ -84,3 +93,20 @@ function printAvailableCommands() {
     }
 }
 
+function getApplicationVersion(){
+    $HEAD_hash = file_get_contents('../.git/refs/heads/master');
+
+    $files = glob('../.git/refs/tags/*');
+
+    foreach(array_reverse($files) as $file) {
+        $contents = file_get_contents($file);
+
+        if($HEAD_hash === $contents)
+        {
+            print 'Current tag is ' . basename($file);
+            exit;
+        }
+    }
+
+    print 'No matching tag';
+}
