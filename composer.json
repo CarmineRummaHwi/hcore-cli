@@ -8,6 +8,14 @@
             "email": "carmine.rumma@healthwareinternational.com"
         }
     ],
+    "authors": [
+        {
+            "name": "Carmine Rumma",
+            "email": "carmine.rumma@healthwareinternational.com",
+            "homepage": "https://www.healthwaregroup.com/",
+            "role": "Developer"
+        }
+    ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.2.0"
