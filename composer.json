@@ -1,12 +1,8 @@
 {
     "name": "hcore/cli",
     "description": "HCore Command Line Tools",
-    "authors": [
-        {
-            "name": "hwicarminerumma",
-            "email": "carmine.rumma@healthwareinternational.com"
-        }
-    ],
+    "keywords": ["hcore"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Carmine Rumma",
