@@ -12,12 +12,12 @@ composer global require hcore/cli
 ```
 
 Make sure to place Composer's system-wide vendor bin directory in your
-`$PATH`{.language-php} so the laravel executable can be located by your
+`$PATH`{.language-php} so the HCORE executable can be located by your
 system. This directory exists in different locations based on your
 operating system; however, some common locations include:
 
 -   macOS and GNU / Linux Distributions:
-    `$HOME/.composer/vendor/bin`{.language-php}
+    `$HOME/.composer/vendor/bin`
 -   Windows:
-    `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`{.language-php}
+    `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
 
