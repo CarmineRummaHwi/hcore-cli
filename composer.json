@@ -1,7 +1,6 @@
 {
     "name": "hcore/cli",
     "description": "HCore Command Line Tools",
-    "type": "project",
     "authors": [
         {
             "name": "hwicarminerumma",
