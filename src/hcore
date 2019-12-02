@@ -94,19 +94,11 @@ function printAvailableCommands() {
 }
 
 function getApplicationVersion(){
-    $HEAD_hash = file_get_contents('../.git/refs/heads/master');
-
-    $files = glob('../.git/refs/tags/*');
-
-    foreach(array_reverse($files) as $file) {
-        $contents = file_get_contents($file);
-
-        if($HEAD_hash === $contents)
-        {
-            print 'Current tag is ' . basename($file);
-            exit;
-        }
+    $ver = "";
+    exec('git describe', $version_mini_hash);
+    if (is_array($version_mini_hash)){
+        $ver = $version_mini_hash[0];
     }
+    console()->d("hcore/cli")->space(1)->d($ver, "green")->nl()->d("");
 
-    print 'No matching tag';
 }
