@@ -11,6 +11,7 @@ $cwd = empty($_SERVER['PWD']) ? getcwd() : $_SERVER['PWD'];
 require_once (dirname(__FILE__) . "/autoload.php");
 require_once (dirname(__FILE__) . "/bootstrap.php");
 $command = "";
+$opt = array();
 if (isset($argv[1])){
     $command = $argv[1];
     $opt = explode(":", $command);
@@ -20,85 +21,4 @@ if (!empty($opt[1])) {
     $command = $opt[0];
 }
 
-if ($command) {
-
-    if ($command == "-h" || $command == "--help") {
-        printAvailableCommands();
-        die();
-    }
-
-    if ($command == "-V" || $command == "--version") {
-        getApplicationVersion();
-        die();
-    }
-
-    if (file_exists(dirname(__FILE__) . "/classes/Console/Commands/" . ucfirst($command) . "Command.php")) {
-        require dirname(__FILE__)  . "/classes/Console/Commands/" . ucfirst($command) . "Command.php";
-        $commandClass = ucfirst($command) . "Command";
-        /** @var BaseCommand $command */
-        $command = new $commandClass($opt);
-        $command->argv = $argv;
-        $command->checkHelp();
-        print $command->exec();
-    } else {
-        console()->displayError("HCORE :: Command not Found", "red")->nl();
-    }
-
-} else {
-    // No command Spec
-    printAvailableCommands();
-    die();
-}
-
-function printAvailableCommands() {
-
-    console()->display("Usage:", "yellow")
-             ->nl()
-             ->space(2)
-             ->display("command [options] [arguments]");
-
-    console()->nl(2);
-
-    console()->display("Options:", "yellow")
-             ->nl()
-             ->space(2)
-             ->display("-h, --help", "green")->d("\tDisplay this Help message")
-             ->nl()
-             ->space(2)
-             ->display("-V, --version", "green")->d("\tDisplay this application version");
-
-    console()->nl(2);
-
-    console()->display("Available Commands:", "yellow")
-             ->nl();
-    $res = scandir(dirname(__FILE__) . "/classes/Console/Commands/");
-    $commands = [];
-    foreach($res as $item){
-        if ($item !== '.' && $item !== '..'){
-            if (file_exists(  dirname(__FILE__) . "/classes/Console/Commands/" . $item)) {
-                require_once dirname(__FILE__) . "/classes/Console/Commands/" . $item;
-                $commandClass = pathinfo($item, PATHINFO_FILENAME);
-                /** @var BaseCommand $command */
-                $command = new $commandClass();
-                //print_r($command);
-                //$command->getCommandHelp();
-
-                console()->display("  " . $command->name , "green");
-                console()->display("\t" . $command->description . "\n");
-
-            } else {
-
-            }
-        }
-    }
-}
-
-function getApplicationVersion(){
-    $ver = "";
-    exec('git describe', $version_mini_hash);
-    if (is_array($version_mini_hash)){
-        $ver = $version_mini_hash[0];
-    }
-    console()->d("hcore/cli")->space(1)->d($ver, "green")->nl()->d("");
-
-}
+\hcore\cli\HCli::getInstance()->run($command, $opt, $argv);

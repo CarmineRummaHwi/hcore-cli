@@ -1,6 +1,6 @@
 <?php
 
-
+use \hcore\cli\HCli;
 
 class CreateCommand extends BaseCommand {
 
@@ -27,10 +27,10 @@ class CreateCommand extends BaseCommand {
 
     public function exec()
     {
-        if (!isset($this->argv[2])){
+        /*if (!isset($this->argv[2])){
             console()->displayError("Project name is required");
             die;
-        }
+        }*/
 
         if (false == \hcore\cli\Utilities::checkComposerInstalled()){
             console()->displayError("Composer is not installed")
@@ -41,6 +41,8 @@ class CreateCommand extends BaseCommand {
             die;
         }
 
+        $prefix = "";
+        /*
         $bitbucketUser = search_argv_val("-u", $this->argv);
         $bitbucketUser = empty($bitbucketUser) ? search_argv_val("--user", $this->argv) : $bitbucketUser;
 
@@ -51,6 +53,8 @@ class CreateCommand extends BaseCommand {
             console()->displayError("BitBucket Access is required");
             die;
         }
+        $prefix = $bitbucketUser . ":" . $bitbucketPassword . "@";
+        */
 
         if ($this->argv[2]){
             $cwd = $this->getCWD();
@@ -81,31 +85,31 @@ class CreateCommand extends BaseCommand {
             $composer->addRequire('hcore/dmr', '^0.3');
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.auth.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.auth.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.api.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.api.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.notifier.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.notifier.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.installer.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.installer.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.orm.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.orm.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
-                'url' => "https://{$bitbucketUser}:{$bitbucketPassword}@bitbucket.org/HealthwareGroup/hcore.dmr.git",
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.dmr.git",
             ));
             $composer->addRepository(array (
                 'type' => 'git',
@@ -128,10 +132,44 @@ class CreateCommand extends BaseCommand {
 
             console()->displaySuccess("composer.json created!");
 
+            $this->askBitbucketConsumer();
+
+            HCli::getInstance()->call("apitests init");
+
             $output = array();
             echo shell_exec("composer install");
         }
 
+    }
+
+    private function askBitbucketConsumer(): void{
+        if (!file_exists($this->getCWD() . '/auth.json')) {
+            console()->d("Please goto:", "blue")
+                     ->nl()
+                     ->d("https://bitbucket.org/account/user/<yoususername>/api", "blue")
+                     ->nl();
+            console()->d("and add Consumer OAuth", "blue")->nl(2);
+            console()->d("Please insert consumer-key:");
+
+            $bitbucketData = array();
+
+            $handle = fopen("php://stdin", "r");
+            $line = fgets($handle);
+            $bitbucketData["consumer-key"] = trim($line);
+
+            console()->d("Please insert consumer-secret:");
+
+            $handle = fopen("php://stdin", "r");
+            $line = fgets($handle);
+            $bitbucketData["consumer-secret"] = trim($line);
+
+            $out = array("bitbucket-oauth" => array("bitbucket.org" => $bitbucketData));
+            $fp = fopen($this->getCWD() . '/auth.json', 'w');
+            fwrite($fp, json_encode($out, JSON_PRETTY_PRINT));
+            fclose($fp);
+
+            console()->displaySuccess("Bitbucket consumer saved!");
+        }
     }
 
 }

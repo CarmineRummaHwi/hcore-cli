@@ -109,13 +109,14 @@ class Console {
     }
 
     public function displayError(string $message){
-        print $this->getColoredString($message . PHP_EOL . PHP_EOL, 'red');
-        print $this->getColoredString(""); // Fix the red cursor
+        print $this->getColoredString($message, 'red');
+        print $this->getColoredString(PHP_EOL); // Fix the red cursor
         return $this;
     }
 
     public function displaySuccess(string $message){
-        print $this->getColoredString($message . PHP_EOL . PHP_EOL, 'green');
+        print $this->getColoredString($message . PHP_EOL, 'green');
+        print $this->getColoredString(PHP_EOL); // Fix the coloured cursor
         return $this;
     }
 }
