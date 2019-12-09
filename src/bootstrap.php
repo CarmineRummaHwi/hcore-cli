@@ -18,13 +18,13 @@
 
 if (!function_exists("ppp")){
     function ppp(array $arr):string {
-        return \hcore\cli\Utilities::ppp($arr);
+        \hcore\cli\Utilities::ppp($arr);
     }
 }
 
 if (!function_exists("ddd")){
     function ddd(array $arr):string {
-        return \hcore\cli\Utilities::ddd($arr);
+        \hcore\cli\Utilities::ddd($arr);
     }
 }
 
