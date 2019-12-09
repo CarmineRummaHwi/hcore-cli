@@ -1,18 +1,14 @@
 <?php
 /**
+ * HCORE CLI
  * @author carmine.rumma@healthwareinternational.com
- * @package hcore
- * Created by PhpStorm.
- * User: crumma
- * Date: 2019-09-19
- * Time: 15:31
+ * @package hcore/cli
  */
-
 
 define ("CLASSES_PATH", dirname(__FILE__) . "/classes");
 define ("DOC_ROOT",     dirname(__FILE__));
 
-spl_autoload_register(function ($class) {
+spl_autoload_register(function (string $class):bool {
 
     // Support for namespaces
     if (strpos($class, '\\') !== false) {

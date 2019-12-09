@@ -1,11 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: crumma
- * Date: 08/10/18
- * Time: 16:35
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
  */
 
+require_once dirname(dirname(dirname(__FILE__))) . "/bootstrap.php";
 class BaseCommand {
 
     const VERSION = '1.0';
@@ -23,15 +23,15 @@ class BaseCommand {
         $this->options = ($option);
     }
 
-    public function getCWD(){
+    public function getCWD():string {
         return getcwd();
     }
 
-    public function exec(){
+    public function exec():string {
 
     }
 
-    public function getUsage(){
+    public function getUsage():void {
         $line = "";
         if (sizeof($this->usage) > 0){
             foreach($this->usage as $usecase) {
@@ -45,7 +45,7 @@ class BaseCommand {
         return $line;
     }
 
-    public function checkHelp(){
+    public function checkHelp():void {
 
         if (isset($this->argv[2])) {
             if ($this->argv[2] == "-h" || $this->argv[2] == "--help" || $this->argv[2] == "help") {

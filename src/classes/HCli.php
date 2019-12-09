@@ -5,8 +5,10 @@
 
 namespace hcore\cli;
 
+require_once dirname(dirname(__FILE__)) . "/bootstrap.php";
 class HCli
 {
+    /** @var HCli */
     private static $instance;
 
     public $classes_path;
@@ -132,7 +134,8 @@ class HCli
 
     public static function getApplicationVersion(){
         $ver = "";
-        exec('git describe', $version_mini_hash);
+        $dir = dirname(dirname(__DIR__));
+        exec("cd $dir; git describe --abbrev=0 --tags", $version_mini_hash);
         if (is_array($version_mini_hash)){
             $ver = $version_mini_hash[0];
             $clean_ver = explode("-", $ver);

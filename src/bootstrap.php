@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: crumma
- * Date: 2019-11-14
- * Time: 14:38
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
  */
 
 if (!function_exists("console")){
@@ -11,26 +10,26 @@ if (!function_exists("console")){
     /**
      * @return \hcore\cli\Console
      */
-    function console(){
+    function console():\hcore\cli\Console{
         global $console;
         return $console;
     }
 }
 
 if (!function_exists("ppp")){
-    function ppp(array $arr){
+    function ppp(array $arr):void {
         return \hcore\cli\Utilities::ppp($arr);
     }
 }
 
 if (!function_exists("ddd")){
-    function ddd(array $arr){
+    function ddd(array $arr):void {
         return \hcore\cli\Utilities::ddd($arr);
     }
 }
 
 if (!function_exists("search_argv_val")){
-    function search_argv_val(string $needle, array $argv){
+    function search_argv_val(string $needle, array $argv): ?string{
         return \hcore\cli\Utilities::searchArgvValue($needle, $argv);
     }
 }

@@ -1,6 +1,9 @@
 <?php
-
-
+/**
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
+ */
 namespace hcore\cli;
 
 class Utilities
@@ -94,6 +97,17 @@ class Utilities
     }
 
     /**
+     * Check if newman is installed
+     * @return bool
+     */
+    public static function checkProjectCreated():bool {
+
+        $result = file_exists();
+
+        return $result;
+    }
+
+    /**
      * @param string $needle
      * @param array $argv
      * @return string|null
@@ -121,6 +135,11 @@ class Utilities
         return null;
     }
 
+    /**
+     * @param string $src
+     * @param string $dest
+     * @return bool
+     */
     public static function copyResource(string $src, string $dest): bool
     {
         if (file_exists($dest)) {
@@ -142,6 +161,10 @@ class Utilities
         return true;
     }
 
+    /**
+     * @param string $dir
+     * @return bool
+     */
     public static function rrmdir(string $dir) : bool
     {
         if (is_dir($dir)) {
@@ -164,6 +187,11 @@ class Utilities
         }
     }
 
+    /**
+     * @param string $path
+     * @param int $permissions
+     * @return bool
+     */
     public static function createDir(string $path, int $permissions) : bool
     {
         if (is_dir($path)) {
@@ -184,6 +212,10 @@ class Utilities
         return true;
     }
 
+    /**
+     * @param array $arr
+     * @return bool|string
+     */
     public static function arrayToStringPhp(array $arr) {
         $base = "array(\n";
         $keys = array_keys($arr);
@@ -196,6 +228,11 @@ class Utilities
         return $base;
     }
 
+    /**
+     * @param string $pattern
+     * @param string $content
+     * @return bool|string
+     */
     public static function getMatch(string $pattern, string $content) {
         preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE, 0);
         if(sizeof($matches) > 0) {
@@ -206,6 +243,12 @@ class Utilities
         return $content;
     }
 
+    /**
+     * @param string $pattern
+     * @param string $content
+     * @param string $replace
+     * @return mixed|string
+     */
     public static function replaceMatch(string $pattern, string $content, string $replace) {
         preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE, 0);
         if(sizeof($matches) > 0) {
