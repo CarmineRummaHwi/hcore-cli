@@ -60,9 +60,10 @@ class BaseCommand {
         $line = "";
         if (sizeof($this->usage) > 0){
             foreach($this->usage as $usecase) {
-
                 console()->display(self::COMMAND . " " . $this->name . " " . $usecase["action"], "green")
-                         ->d("\t")->d($usecase["description"])->nl();
+                         ->d("\t")
+                         ->d($usecase["description"])
+                         ->nl();
             }
         } else {
             $line = "  " . $this->name . " " . ((sizeof($this->options_desc) > 0) ? '[options]' : ' ') . ' ' . ((sizeof($this->arguments) > 0) ? '[<arguments>]' : ' ');

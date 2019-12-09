@@ -5,7 +5,7 @@
  * @package hcore/cli
  */
 
-//if (!function_exists("console")){
+if (!function_exists("console")){
     $console = new \hcore\cli\Console();
     /**
      * @return \hcore\cli\Console
@@ -14,7 +14,7 @@
         global $console;
         return $console;
     }
-//}
+}
 
 if (!function_exists("ppp")){
     function ppp(array $arr):string {
