@@ -129,6 +129,7 @@ class CreateCommand extends BaseCommand {
                 'src/',
             ));
             */
+
             $composer->addScripts();
 
             $fp = fopen($cwd . '/composer.json', 'w');
