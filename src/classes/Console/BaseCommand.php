@@ -27,11 +27,36 @@ class BaseCommand {
         return getcwd();
     }
 
-    public function exec():string {
+    public function exec():void {
 
     }
 
-    public function getUsage():void {
+    public function preExec():void{
+        //ddd($this->argv);
+        if (is_cli()){
+            /* @todo centralize command retrieve */
+            $command = "";
+            $opt = array();
+            if (isset($this->argv[1])){
+                $command = $this->argv[1];
+                $opt = explode(":", $command);
+            }
+
+            if (!empty($opt[1])) {
+                $command = $opt[0];
+            }
+            /**/
+            if ($command != "" && !file_exists($this->getCWD() . "/hcore.lock")){
+                console()->displayError("Please launch the create command before any other command")->nl();
+                die();
+            }
+        }
+    }
+    public function postExec():void{
+
+    }
+
+    public function getUsage():string {
         $line = "";
         if (sizeof($this->usage) > 0){
             foreach($this->usage as $usecase) {
@@ -45,56 +70,59 @@ class BaseCommand {
         return $line;
     }
 
-    public function checkHelp():void {
-
+    public function checkHelp():bool {
         if (isset($this->argv[2])) {
             if ($this->argv[2] == "-h" || $this->argv[2] == "--help" || $this->argv[2] == "help") {
-
-                if (!empty($this->description)) {
-                    console()->d("Description:", "yellow")
-                             ->nl()
-                             ->space(2)
-                             ->d($this->description)
-                             ->nl(2);
-                }
-
-                console()->d("Usage:", "yellow")
-                         ->nl();
-
-                $this->getUsage();
-                console()->nl();
-
-
-                console()->d("Arguments:", "yellow")
-                         ->nl();
-
-                foreach ($this->arguments as $item) {
-
-                    console()->space(2)
-                             ->d($item["name"], "green")
-                             ->d("\t")
-                             ->d($item["description"])->nl();
-
-                }
-                console()->nl();
-
-                if (sizeof($this->options_desc) > 0) {
-                    console()->d("Options:\n", "yellow");
-                    foreach ($this->options_desc as $item) {
-
-                        console()->space(2)
-                            ->d($item["short"] . ",", "green")
-                            ->d(" " . $item["regular"], "green")
-                            ->d("\t")
-                            ->d($item["description"])
-                            ->nl();
-
-                    }
-                    console()->nl();
-                }
-                die();
+                return true;
             }
+            return false;
+        }
+        return false;
+    }
 
+    public function showHelp():void {
+
+        if (!empty($this->description)) {
+            console()->d("Description:", "yellow")
+                ->nl()
+                ->space(2)
+                ->d($this->description)
+                ->nl(2);
+        }
+
+        console()->d("Usage:", "yellow")
+            ->nl();
+
+        $this->getUsage();
+        console()->nl();
+
+
+        console()->d("Arguments:", "yellow")
+            ->nl();
+
+        foreach ($this->arguments as $item) {
+
+            console()->space(2)
+                ->d($item["name"], "green")
+                ->d("\t")
+                ->d($item["description"])->nl();
+
+        }
+        console()->nl();
+
+        if (sizeof($this->options_desc) > 0) {
+            console()->d("Options:\n", "yellow");
+            foreach ($this->options_desc as $item) {
+
+                console()->space(2)
+                    ->d($item["short"] . ",", "green")
+                    ->d(" " . $item["regular"], "green")
+                    ->d("\t")
+                    ->d($item["description"])
+                    ->nl();
+
+            }
+            console()->nl();
         }
     }
 

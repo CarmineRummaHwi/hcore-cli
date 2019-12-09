@@ -8,6 +8,12 @@ namespace hcore\cli;
 
 class Utilities
 {
+    /**
+     * @return bool
+     */
+    public static function is_cli():bool {
+        return PHP_SAPI === 'cli';
+    }
 
     /**
      * Pretty Dump an Array

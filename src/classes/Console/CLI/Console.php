@@ -85,13 +85,16 @@ class Console {
 
     /**
      * Display Message
+     *
      * @example display('hello', 'green')
+     *
      * @param string $message
      * @param string|null $foreground_color
      * @param string|null $background_color
-     * @return string
+     *
+     * @return self
      */
-    public function display(string $message, string $foreground_color = null, string $background_color = null):Console{
+    public function display(string $message, string $foreground_color = null, string $background_color = null):self{
         print $this->getColoredString($message, $foreground_color, $background_color);
         return $this;
     }

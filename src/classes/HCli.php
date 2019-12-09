@@ -1,6 +1,8 @@
 <?php
 /**
- * @
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
  */
 
 namespace hcore\cli;
@@ -17,7 +19,7 @@ class HCli
     /**
      * @return HCli
      */
-    public static function getInstance() : ?self {
+    public static function getInstance() : HCli {
         if(!self::$instance) {
             self::$instance = new HCli();
             self::$instance->classes_path = dirname(__FILE__);
@@ -30,7 +32,8 @@ class HCli
      * @param String $command
      * @param array|null $opt
      * @param array|null $argv
-     * @return void|null
+     *
+     * @return void
      */
     public function run(String $command = "", ?array $opt = array(), ?array $argv = array()): void {
         if ($command) {
@@ -47,12 +50,21 @@ class HCli
 
             if (file_exists($this->classes_path . "/Console/Commands/" . ucfirst($command) . "Command.php")) {
                 require $this->classes_path . "/Console/Commands/" . ucfirst($command) . "Command.php";
+
                 $commandClass = ucfirst($command) . "Command";
-                /** @var BaseCommand $command */
-                $command = new $commandClass($opt);
-                $command->argv = $argv;
-                $command->checkHelp();
-                print $command->exec();
+
+                /**
+                 * @var \BaseCommand
+                 */
+                $CmdClass = new $commandClass($opt);
+                $CmdClass->argv = $argv;
+                if (true == $CmdClass->checkHelp()){
+                    $CmdClass->showHelp();
+                    die();
+                }
+                $CmdClass->preExec();
+                print $CmdClass->exec();
+                $CmdClass->postExec();
             } else {
                 console()->displayError(self::name . ": command not Found");
             }
@@ -119,6 +131,7 @@ class HCli
                 if (file_exists(  dirname(__FILE__) . "/Console/Commands/" . $item)) {
                     require_once dirname(__FILE__) . "/Console/Commands/" . $item;
                     $commandClass = pathinfo($item, PATHINFO_FILENAME);
+                    $command = new \BaseCommand();
                     /** @var BaseCommand $command */
                     $command = new $commandClass();
 

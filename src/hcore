@@ -1,8 +1,9 @@
 #!/usr/bin/env php
 <?php
-
 /**
- * @author HealthwareIntl | Carmine Rumma
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
  */
 
 set_time_limit(0);
@@ -10,6 +11,7 @@ set_time_limit(0);
 $cwd = empty($_SERVER['PWD']) ? getcwd() : $_SERVER['PWD'];
 require_once (dirname(__FILE__) . "/autoload.php");
 require_once (dirname(__FILE__) . "/bootstrap.php");
+/* @todo centralize command retrieve */
 $command = "";
 $opt = array();
 if (isset($argv[1])){
@@ -20,5 +22,5 @@ if (isset($argv[1])){
 if (!empty($opt[1])) {
     $command = $opt[0];
 }
-
+/**/
 \hcore\cli\HCli::getInstance()->run($command, $opt, $argv);

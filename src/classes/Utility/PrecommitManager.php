@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
+ */
 
 namespace hcore\cli;
 
@@ -11,9 +15,24 @@ class PrecommitManager
      */
     public static $instance;
 
+    /**
+     * @var string
+     */
     private $precommit_mock;
+
+    /**
+     * @var string
+     */
     private $precommit_path;
+
+    /**
+     * @var string
+     */
     private $precommit_path_lock;
+
+    /**
+     * @var string
+     */
     private $resource_path;
 
     /**
@@ -32,7 +51,7 @@ class PrecommitManager
     }
 
     public function read() : string {
-        return $this->precommit;
+        return $this->precommit_mock;
     }
 
     /**
@@ -56,5 +75,6 @@ class PrecommitManager
             file_put_contents($this->precommit_path_lock, time());
             return true;
         }
+        return false;
     }
 }

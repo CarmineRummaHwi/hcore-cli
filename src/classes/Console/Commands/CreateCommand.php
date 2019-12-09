@@ -1,4 +1,9 @@
 <?php
+/**
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
+ */
 
 use \hcore\cli\HCli;
 
@@ -25,7 +30,7 @@ class CreateCommand extends BaseCommand {
         ]
     ];
 
-    public function exec()
+    public function exec():void
     {
         /*if (!isset($this->argv[2])){
             console()->displayError("Project name is required");
@@ -127,6 +132,12 @@ class CreateCommand extends BaseCommand {
             $composer->addScripts();
 
             $fp = fopen($cwd . '/composer.json', 'w');
+            fwrite($fp, json_encode(array(
+                "name" => "hcore/" . $this->argv[2]
+            )));
+            fclose($fp);
+
+            $fp = fopen($cwd . '/hcore.lock', 'w');
             fwrite($fp, $composer->toJson());
             fclose($fp);
 

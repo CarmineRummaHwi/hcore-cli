@@ -1,4 +1,9 @@
 <?php
+/**
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
+ */
 
 class HtaccessCommand extends BaseCommand {
 
@@ -23,7 +28,7 @@ class HtaccessCommand extends BaseCommand {
         ]
     ];
 
-    public function exec()
+    public function exec() :void
     {
         if (!isset($this->options[1])){
             console()->displayError("Project name is required");

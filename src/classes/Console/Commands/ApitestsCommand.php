@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * HCORE CLI
+ * @author carmine.rumma@healthwareinternational.com
+ * @package hcore/cli
+ */
 
 
 class ApitestsCommand extends BaseCommand {
@@ -27,7 +31,7 @@ class ApitestsCommand extends BaseCommand {
         ]
     ];
 
-    public function exec()
+    public function exec() :void
     {
         if (false == \hcore\cli\Utilities::checkNodeJsInstalled()){
             console()->displayError("nodejs is not installed")
