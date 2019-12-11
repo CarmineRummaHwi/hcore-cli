@@ -5,7 +5,6 @@
  * @package hcore/cli
  */
 
-require_once dirname(dirname(dirname(__FILE__))) . "/bootstrap.php";
 class BaseCommand {
 
     const VERSION = '1.0';
@@ -18,9 +17,15 @@ class BaseCommand {
     public $options_desc;
     public $usage = [];
 
+    /**
+     * @var \hcore\cli\Console
+     */
+    public $console;
+
     public function __construct($option = array())
     {
         $this->options = ($option);
+        $this->console = new \hcore\cli\Console();
     }
 
     public function getCWD():string {

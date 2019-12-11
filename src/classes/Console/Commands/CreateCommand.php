@@ -29,6 +29,12 @@ class CreateCommand extends BaseCommand {
             "description"   => "bitbucket password",
         ]
     ];
+    public $usage = [
+        [
+            "action" => "<name>",
+            "description" => "Create HCore Project"
+        ]
+    ];
 
     public function exec():void
     {
@@ -114,14 +120,30 @@ class CreateCommand extends BaseCommand {
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.orm.git",
             ));
-            $composer->addRepository(array (
-                'type' => 'git',
-                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.dmr.git",
-            ));
-            $composer->addRepository(array (
-                'type' => 'git',
-                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.uploader.git",
-            ));
+            /* DMR */
+            console()->d("Do you need module DMR? [y/N]:");
+            $handle = fopen("php://stdin", "r");
+            $res    = fgets($handle);
+            if (trim($res) === "" || trim($res) === "y") {
+                $composer->addRepository(array(
+                    'type' => 'git',
+                    'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.dmr.git",
+                ));
+            }
+            /* DMR */
+
+            /* UPLOADER */
+            console()->d("Do you need module UPLOADER? [y/N]:");
+            $handle = fopen("php://stdin", "r");
+            $res    = fgets($handle);
+            if (trim($res) === "" || trim($res) === "y") {
+                $composer->addRepository(array (
+                    'type' => 'git',
+                    'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.uploader.git",
+                ));
+            }
+            /* UPLOADER */
+
             $composer->addRepository(array (
                 'type' => 'git',
                 'url' => 'https://bitbucket.org/cmsff/libs.git',
