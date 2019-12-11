@@ -46,7 +46,7 @@ class BaseCommand {
                 $command = $opt[0];
             }
             /**/
-            if ($command != "" && !file_exists($this->getCWD() . "/hcore.lock")){
+            if ($command != "create" && $command != "" && !file_exists($this->getCWD() . "/hcore.lock")){
                 console()->displayError("Please launch the create command before any other command")->nl();
                 die();
             }

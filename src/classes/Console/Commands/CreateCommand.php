@@ -32,10 +32,11 @@ class CreateCommand extends BaseCommand {
 
     public function exec():void
     {
-        /*if (!isset($this->argv[2])){
+        if (!isset($this->argv[2])){
             console()->displayError("Project name is required");
+            console()->space(2)->d("hcore create <project_name>", "green")->nl(2);
             die;
-        }*/
+        }
 
         if (false == \hcore\cli\Utilities::checkComposerInstalled()){
             console()->displayError("Composer is not installed")
@@ -88,6 +89,7 @@ class CreateCommand extends BaseCommand {
             $composer->addRequire('hcore/installer', '^0.3');
             $composer->addRequire('hcore/orm', '^0.3');
             $composer->addRequire('hcore/dmr', '^0.3');
+            $composer->addRequire('hcore/uploader', '^0.3');
             $composer->addRepository(array (
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.git",
@@ -118,6 +120,10 @@ class CreateCommand extends BaseCommand {
             ));
             $composer->addRepository(array (
                 'type' => 'git',
+                'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.uploader.git",
+            ));
+            $composer->addRepository(array (
+                'type' => 'git',
                 'url' => 'https://bitbucket.org/cmsff/libs.git',
             ));
             /*
@@ -133,13 +139,14 @@ class CreateCommand extends BaseCommand {
             $composer->addScripts();
 
             $fp = fopen($cwd . '/composer.json', 'w');
-            fwrite($fp, json_encode(array(
-                "name" => "hcore/" . $this->argv[2]
-            )));
+            fwrite($fp, $composer->toJson());
+
             fclose($fp);
 
             $fp = fopen($cwd . '/hcore.lock', 'w');
-            fwrite($fp, $composer->toJson());
+            fwrite($fp, json_encode(array(
+                "name" => "hcore/" . $this->argv[2]
+            )));
             fclose($fp);
 
             console()->displaySuccess("composer.json created!");
