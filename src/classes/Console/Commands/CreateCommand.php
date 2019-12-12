@@ -10,15 +10,15 @@ use \hcore\cli\HCli;
 class CreateCommand extends BaseCommand {
 
     public $name        = "create";
-    public $description = "HCore install - hcore create <name>";
+    public $description = "Create a new HCore application";
     public $arguments   = [
         [
             "name"          => "name",
-            "description"   => "project name"
+            "description"   => "your project name"
         ],
     ];
     public $options_desc = [
-        [
+        /*[
             "short"         => "-u",
             "regular"       => "--user",
             "description"   => "bitbucket username",
@@ -27,7 +27,7 @@ class CreateCommand extends BaseCommand {
             "short"         => "-p",
             "regular"       => "--password",
             "description"   => "bitbucket password",
-        ]
+        ]*/
     ];
     public $usage = [
         [
@@ -84,7 +84,7 @@ class CreateCommand extends BaseCommand {
             $composer->add("name", "hcore/" . $this->argv[2]);
             $composer->add("type", "library");
             $composer->add("version", "1.0");
-            $composer->add("description", "hcore installer");
+            $composer->add("description", "A new HCore application");
             //$composer->addAuthor($authorItem[0]);
             //$composer->addAuthor($authorItem[1]);
             $composer->add("minimum-stability", "dev");
@@ -177,7 +177,6 @@ class CreateCommand extends BaseCommand {
 
             HCli::getInstance()->call("apitests init");
 
-            $output = array();
             echo shell_exec("composer install");
         }
 

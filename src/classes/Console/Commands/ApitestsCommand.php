@@ -60,8 +60,17 @@ class ApitestsCommand extends BaseCommand {
 
         $action  = $this->argv[2]; // init || run
         if ($action == "init"){
-            console()->d("precommit initialization...")
+
+            if (false === \hcore\cli\Utilities::dirIsRepository($cwd)){
+                console()->displayError("This Directory is not a Git Repository!")
+                         ->d("you can run this command only on repository folder", "dark_gray")->nl();
+                die();
+            }
+
+            console()->d("precommit initialization...", "green")
                      ->nl();
+
+
 
             if (true === $precommitManager->initialize()->save()){
                 console()->displaySuccess("git pre-commit hook correctly initializated.");

@@ -65,7 +65,18 @@ class BaseCommand {
         $line = "";
         if (sizeof($this->usage) > 0){
             foreach($this->usage as $usecase) {
-                console()->display(self::COMMAND . " " . $this->name . " " . $usecase["action"], "green")
+                $separator = isset($usecase["separator"]) ? $usecase["separator"] : " ";
+
+                $sampleCommand = self::COMMAND . " " . $this->name . $separator . $usecase["action"];
+                $args = [];
+                if (isset($usecase["arguments"])){
+                    foreach ($usecase["arguments"] as $arg){
+                        $args[] = "<" . $arg . ">";
+                    }
+                }
+                $sampleCommand .= " " . implode(" ", $args);
+
+                console()->display($sampleCommand, "green")
                          ->d("\t")
                          ->d($usecase["description"])
                          ->nl();
@@ -116,7 +127,7 @@ class BaseCommand {
         }
         console()->nl();
 
-        if (sizeof($this->options_desc) > 0) {
+        if (isset($this->options_desc) && sizeof($this->options_desc) > 0) {
             console()->d("Options:\n", "yellow");
             foreach ($this->options_desc as $item) {
 

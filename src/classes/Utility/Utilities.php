@@ -106,10 +106,8 @@ class Utilities
      * Check if newman is installed
      * @return bool
      */
-    public static function checkProjectCreated():bool {
-
-        $result = file_exists();
-
+    public static function dirIsRepository(string $path):bool {
+        $result = file_exists($path . "/.git/config");
         return $result;
     }
 
