@@ -1,7 +1,7 @@
-# HCore/CLI installation [![Build Status](https://travis-ci.org/Seldaek/monolog.svg?branch=master)](https://travis-ci.org/Seldaek/monolog)
+# HCore/CLI installation [![Build Status](https://travis-ci.org/CarmineRummaHwi/hcore-cli.svg?branch=master)](https://travis-ci.org/CarmineRummaHwi/hcore-cli)
                       
-[![Total Downloads](https://img.shields.io/packagist/dt/monolog/monolog.svg)](https://packagist.org/packages/monolog/monolog)
-[![Latest Stable Version](https://img.shields.io/packagist/v/monolog/monolog.svg)](https://packagist.org/packages/monolog/monolog)
+[![Total Downloads](https://img.shields.io/packagist/dt/hcore/cli.svg)](https://packagist.org/packages/monolog/monolog)
+[![Latest Stable Version](https://img.shields.io/packagist/v/hcore/cli.svg)](https://packagist.org/packages/monolog/monolog)
 
 HCore/CLI utilizes [Composer](https://getcomposer.org) to manage its
 dependencies. So, before using HCore/CLI, make sure you have Composer
