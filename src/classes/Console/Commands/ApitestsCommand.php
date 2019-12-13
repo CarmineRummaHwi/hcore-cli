@@ -64,7 +64,7 @@ class ApitestsCommand extends BaseCommand {
             if (false === \hcore\cli\Utilities::dirIsRepository($cwd)){
                 console()->displayError("This Directory is not a Git Repository!")
                          ->d("you can run this command only on repository folder", "dark_gray")->nl();
-                die();
+                return;
             }
 
             console()->d("precommit initialization...", "green")
