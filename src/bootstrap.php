@@ -5,31 +5,35 @@
  * @package hcore/cli
  */
 
-if (!function_exists("console")){
+if (!function_exists("console")) {
     $console = new \hcore\cli\Console();
     /**
      * @return \hcore\cli\Console
      */
-    function console():\hcore\cli\Console{
+    function console():\hcore\cli\Console
+    {
         global $console;
         return $console;
     }
 }
 
-if (!function_exists("ppp")){
-    function ppp(array $arr):string {
+if (!function_exists("ppp")) {
+    function ppp(array $arr):string
+    {
         \hcore\cli\Utilities::ppp($arr);
     }
 }
 
-if (!function_exists("ddd")){
-    function ddd(array $arr):string {
+if (!function_exists("ddd")) {
+    function ddd(array $arr):string
+    {
         \hcore\cli\Utilities::ddd($arr);
     }
 }
 
-if (!function_exists("search_argv_val")){
-    function search_argv_val(string $needle, array $argv): ?string{
+if (!function_exists("search_argv_val")) {
+    function search_argv_val(string $needle, array $argv): ?string
+    {
         return \hcore\cli\Utilities::searchArgvValue($needle, $argv);
     }
 }
@@ -38,6 +42,7 @@ if (!function_exists("search_argv_val")){
  * Check is CLI
  * @return bool
  */
-function is_cli():bool{
+function is_cli():bool
+{
     return \hcore\cli\Utilities::is_cli();
 }

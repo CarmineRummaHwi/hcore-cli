@@ -7,8 +7,8 @@
 
 use \hcore\cli\HCli;
 
-class CreateCommand extends BaseCommand {
-
+class CreateCommand extends BaseCommand
+{
     public $name        = "create";
     public $description = "Create a new HCore application";
     public $arguments   = [
@@ -38,13 +38,13 @@ class CreateCommand extends BaseCommand {
 
     public function exec():void
     {
-        if (!isset($this->argv[2])){
+        if (!isset($this->argv[2])) {
             console()->displayError("Project name is required");
             console()->space(2)->d("hcore create <project_name>", "green")->nl(2);
             die;
         }
 
-        if (false == \hcore\cli\Utilities::checkComposerInstalled()){
+        if (false == \hcore\cli\Utilities::checkComposerInstalled()) {
             console()->displayError("Composer is not installed")
                      ->space(2)->d("Run this commands to install it:" . PHP_EOL)
                      ->space(2)->d('curl -sS https://getcomposer.org/installer | php' . PHP_EOL, 'red')
@@ -68,7 +68,7 @@ class CreateCommand extends BaseCommand {
         $prefix = $bitbucketUser . ":" . $bitbucketPassword . "@";
         */
 
-        if ($this->argv[2]){
+        if ($this->argv[2]) {
             $cwd = $this->getCWD();
             $authorItems     = array();
             $authorItems[]   = array(
@@ -96,27 +96,27 @@ class CreateCommand extends BaseCommand {
             $composer->addRequire('hcore/orm', '^0.3');
             $composer->addRequire('hcore/dmr', '^0.3');
             $composer->addRequire('hcore/uploader', '^0.3');
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.git",
             ));
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.auth.git",
             ));
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.api.git",
             ));
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.notifier.git",
             ));
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.installer.git",
             ));
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.orm.git",
             ));
@@ -137,14 +137,14 @@ class CreateCommand extends BaseCommand {
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
             if (trim($res) === "" || trim($res) === "y") {
-                $composer->addRepository(array (
+                $composer->addRepository(array(
                     'type' => 'git',
                     'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.uploader.git",
                 ));
             }
             /* UPLOADER */
 
-            $composer->addRepository(array (
+            $composer->addRepository(array(
                 'type' => 'git',
                 'url' => 'https://bitbucket.org/cmsff/libs.git',
             ));
@@ -179,10 +179,10 @@ class CreateCommand extends BaseCommand {
 
             echo shell_exec("composer install");
         }
-
     }
 
-    private function askBitbucketConsumer(): void{
+    private function askBitbucketConsumer(): void
+    {
         if (!file_exists($this->getCWD() . '/auth.json')) {
             console()->d("Please goto:", "blue")
                      ->nl()
@@ -211,5 +211,4 @@ class CreateCommand extends BaseCommand {
             console()->displaySuccess("Bitbucket consumer saved!");
         }
     }
-
 }

@@ -11,7 +11,8 @@ class Utilities
     /**
      * @return bool
      */
-    public static function is_cli():bool {
+    public static function is_cli():bool
+    {
         return PHP_SAPI === 'cli';
     }
 
@@ -19,7 +20,8 @@ class Utilities
      * Pretty Dump an Array
      * @param array $arr
      */
-    public static function ppp(array $arr):void {
+    public static function ppp(array $arr):void
+    {
         echo "<pre>";
         print_r($arr);
     }
@@ -28,7 +30,8 @@ class Utilities
      * Pretty Dump an Array and Die
      * @param array $arr
      */
-    public static function ddd(array $arr):void {
+    public static function ddd(array $arr):void
+    {
         echo "<pre>";
         print_r($arr);
         die("END");
@@ -38,8 +41,8 @@ class Utilities
      * Check if Composer is installed
      * @return bool
      */
-    public static function checkComposerInstalled():bool {
-
+    public static function checkComposerInstalled():bool
+    {
         $result = shell_exec('composer -v > /dev/null 2>&1
                                     COMPOSER=$?
                                     if [[ $COMPOSER -ne 0 ]]; then
@@ -55,8 +58,8 @@ class Utilities
      * Check if NodeJs is installed
      * @return bool
      */
-    public static function checkNodeJsInstalled():bool {
-
+    public static function checkNodeJsInstalled():bool
+    {
         $result = shell_exec('node -v > /dev/null 2>&1
                                     NODE=$?
                                     if [[ $NODE -ne 0 ]]; then
@@ -72,8 +75,8 @@ class Utilities
      * Check if npm is installed
      * @return bool
      */
-    public static function checkNPMInstalled():bool {
-
+    public static function checkNPMInstalled():bool
+    {
         $result = shell_exec('npm -v > /dev/null 2>&1
                                     NPM=$?
                                     if [[ $NPM -ne 0 ]]; then
@@ -89,8 +92,8 @@ class Utilities
      * Check if newman is installed
      * @return bool
      */
-    public static function checkNewmanInstalled():bool {
-
+    public static function checkNewmanInstalled():bool
+    {
         $result = shell_exec('newman -v > /dev/null 2>&1
                                     NEWMAN=$?
                                     if [[ $NEWMAN -ne 0 ]]; then
@@ -106,7 +109,8 @@ class Utilities
      * Check if newman is installed
      * @return bool
      */
-    public static function dirIsRepository(string $path):bool {
+    public static function dirIsRepository(string $path):bool
+    {
         $result = file_exists($path . "/.git/config");
         return $result;
     }
@@ -116,11 +120,12 @@ class Utilities
      * @param array $argv
      * @return string|null
      */
-    public static function searchArgvValue(string $needle, array $argv): ?string {
+    public static function searchArgvValue(string $needle, array $argv): ?string
+    {
 
         // Strict search (ex. -uusername)
         $indexArr = array_search($needle, $argv);
-        if ($indexArr !== false){
+        if ($indexArr !== false) {
             return trim($argv[$indexArr + 1]);
         }
 
@@ -147,13 +152,13 @@ class Utilities
     public static function copyResource(string $src, string $dest): bool
     {
         if (file_exists($dest)) {
-            if(is_dir($dest)){
+            if (is_dir($dest)) {
                 $objects = scandir($dest);
                 foreach ($objects as $object) {
                     self::rrmdir($object);
                 }
             }
-            if(!unlink($dest)) {
+            if (!unlink($dest)) {
                 return false;
             }
         }
@@ -177,13 +182,13 @@ class Utilities
                 if ($object != "." && $object != "..") {
                     if (filetype($dir."/".$object) == "dir") {
                         self::rrmdir($dir . "/" . $object);
-                    }else {
+                    } else {
                         unlink($dir."/".$object);
                     }
                 }
             }
             reset($objects);
-            if(rmdir($dir)){
+            if (rmdir($dir)) {
                 return true;
             }
 
@@ -199,14 +204,14 @@ class Utilities
     public static function createDir(string $path, int $permissions) : bool
     {
         if (is_dir($path)) {
-            if(!self::rrmdir($path)){
+            if (!self::rrmdir($path)) {
                 return false;
             }
         }
 
         if (mkdir($path, 0777, true) === true) {
             $permit = $permissions; // (($writable) ? 0664 : 0444);
-            if(!chmod($path, $permit)){
+            if (!chmod($path, $permit)) {
                 return false;
             }
         } else {
@@ -220,10 +225,11 @@ class Utilities
      * @param array $arr
      * @return bool|string
      */
-    public static function arrayToStringPhp(array $arr) {
+    public static function arrayToStringPhp(array $arr)
+    {
         $base = "array(\n";
         $keys = array_keys($arr);
-        foreach ($keys as $key){
+        foreach ($keys as $key) {
             $base .= "\t\t\"$key\"" . " => \"" . $arr[$key] . "\",\n";
         }
         $base = substr($base, 0, -2);
@@ -237,9 +243,10 @@ class Utilities
      * @param string $content
      * @return bool|string
      */
-    public static function getMatch(string $pattern, string $content) {
+    public static function getMatch(string $pattern, string $content)
+    {
         preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE, 0);
-        if(sizeof($matches) > 0) {
+        if (sizeof($matches) > 0) {
             $search = $matches[0][0];
             $index = $matches[0][1];
             return substr($content, $index, strlen($search));
@@ -253,9 +260,10 @@ class Utilities
      * @param string $replace
      * @return mixed|string
      */
-    public static function replaceMatch(string $pattern, string $content, string $replace) {
+    public static function replaceMatch(string $pattern, string $content, string $replace)
+    {
         preg_match($pattern, $content, $matches, PREG_OFFSET_CAPTURE, 0);
-        if(sizeof($matches) > 0) {
+        if (sizeof($matches) > 0) {
             $search = $matches[0][0];
             $index = $matches[0][1];
             return substr_replace($content, $replace, $index, strlen($search));

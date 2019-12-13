@@ -7,10 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class HtaccessManagerTest extends TestCase
 {
-
     public function testAddToBanlist()
     {
-        if(!file_exists(".htaccess")) {
+        if (!file_exists(".htaccess")) {
             Utilities::copyResource("../src/resources/htaccess", ".htaccess");
         }
 
@@ -24,7 +23,7 @@ class HtaccessManagerTest extends TestCase
 
     public function testRemoveFromBanlist()
     {
-        if(!file_exists(".htaccess")) {
+        if (!file_exists(".htaccess")) {
             Utilities::copyResource("../src/resources/htaccess", ".htaccess");
         }
 
@@ -125,7 +124,8 @@ class HtaccessManagerTest extends TestCase
         $this->assertFileExists(".htaccess", ".htaccess not exists");
     }
 
-    public function testAddXFrameOption() {
+    public function testAddXFrameOption()
+    {
         $htaManager = HtaccessManager::getInstance("./.htaccess");
         $htaManager->addXFrameOptions("enzoromano.eu");
         $htaManager->addXFrameOptions("carminerumma.it");

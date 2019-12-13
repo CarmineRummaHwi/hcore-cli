@@ -5,8 +5,8 @@
  * @package hcore/cli
  */
 
-class HtaccessCommand extends BaseCommand {
-
+class HtaccessCommand extends BaseCommand
+{
     public $name        = "htaccess";
     public $description = "HCore htaccess - .htaccess manager";
     public $arguments   = [
@@ -30,7 +30,7 @@ class HtaccessCommand extends BaseCommand {
 
     public function exec() :void
     {
-        if (!isset($this->options[1])){
+        if (!isset($this->options[1])) {
             console()->displayError("Project name is required");
             die;
         }
@@ -39,13 +39,13 @@ class HtaccessCommand extends BaseCommand {
         /** @var \hcore\cli\HtaccessManager */
         $htaccessManager = \hcore\cli\HtaccessManager::getInstance($cwd . DIRECTORY_SEPARATOR . ".htaccess");
 
-        if ($this->options[1] == "redirect-http"){
+        if ($this->options[1] == "redirect-http") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableHttpRedirect()
                                 ->save();
                 console()->displaySuccess("Http Redirect enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableHttpRedirect()
                                 ->save();
                 console()->displaySuccess("Http Redirect disabled");
@@ -54,13 +54,13 @@ class HtaccessCommand extends BaseCommand {
             }
         }
 
-        if ($this->options[1] == "redirect-https"){
+        if ($this->options[1] == "redirect-https") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableHttpsRedirect()
                                 ->save();
                 console()->displaySuccess("Https Redirect enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableHttpsRedirect()
                                 ->save();
                 console()->displaySuccess("Https Redirect disabled");
@@ -69,7 +69,7 @@ class HtaccessCommand extends BaseCommand {
             }
         }
 
-        if ($this->options[1] == "banlist"){
+        if ($this->options[1] == "banlist") {
             $add = search_argv_val("-a", $this->argv);
             $add = empty($add) ? search_argv_val("--add", $this->argv) : $add;
 
@@ -81,8 +81,8 @@ class HtaccessCommand extends BaseCommand {
                                 ->save();
                 console()->displaySuccess($add . " added to the ban list");
                 die();
-            }else{
-                if(empty($remove)) {
+            } else {
+                if (empty($remove)) {
                     console()->displayError("ban list item missing");
                     die();
                 }
@@ -93,20 +93,19 @@ class HtaccessCommand extends BaseCommand {
                                 ->save();
                 console()->displaySuccess($remove . " removed from the ban list");
                 die();
-            }else{
+            } else {
                 console()->displayError("ban list item missing");
                 die();
             }
-
         }
 
-        if ($this->options[1] == "security-cleaner"){
+        if ($this->options[1] == "security-cleaner") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableSecurityCleaner()
                     ->save();
                 console()->displaySuccess("Security cleaner enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableSecurityCleaner()
                     ->save();
                 console()->displaySuccess("Security cleaner disabled");
@@ -115,13 +114,13 @@ class HtaccessCommand extends BaseCommand {
             }
         }
 
-        if ($this->options[1] == "cache"){
+        if ($this->options[1] == "cache") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableHtaccessCache()
                     ->save();
                 console()->displaySuccess("Security cleaner enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableHtaccessCache()
                     ->save();
                 console()->displaySuccess("Security cleaner disabled");
@@ -130,13 +129,13 @@ class HtaccessCommand extends BaseCommand {
             }
         }
 
-        if ($this->options[1] == "security"){
+        if ($this->options[1] == "security") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableHtaccessSecurity()
                     ->save();
                 console()->displaySuccess("Security enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableHtaccessSecurity()
                     ->save();
                 console()->displaySuccess("Security disabled");
@@ -145,13 +144,13 @@ class HtaccessCommand extends BaseCommand {
             }
         }
 
-        if ($this->options[1] == "security-advanced"){
+        if ($this->options[1] == "security-advanced") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableHtaccessSecurityAdvanced()
                                 ->save();
                 console()->displaySuccess("Security advanced enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableHtaccessSecurityAdvanced()
                                 ->save();
                 console()->displaySuccess("Security advanced disabled");
@@ -160,7 +159,7 @@ class HtaccessCommand extends BaseCommand {
             }
         }
 
-        if ($this->options[1] == "cors"){
+        if ($this->options[1] == "cors") {
             $add = search_argv_val("-a", $this->argv);
             $add = empty($add) ? search_argv_val("--add", $this->argv) : $add;
 
@@ -172,8 +171,8 @@ class HtaccessCommand extends BaseCommand {
                                 ->save();
                 console()->displaySuccess($add . " added to cors policy");
                 die();
-            }else{
-                if(empty($remove)) {
+            } else {
+                if (empty($remove)) {
                     console()->displayError("ban list item missing");
                     die();
                 }
@@ -184,14 +183,13 @@ class HtaccessCommand extends BaseCommand {
                                 ->save();
                 console()->displaySuccess($remove . " removed from cors policy");
                 die();
-            }else{
+            } else {
                 console()->displayError("ban list item missing");
                 die();
             }
-
         }
 
-        if ($this->options[1] == "xframe"){
+        if ($this->options[1] == "xframe") {
             $add = search_argv_val("-a", $this->argv);
             $add = empty($add) ? search_argv_val("--add", $this->argv) : $add;
 
@@ -203,8 +201,8 @@ class HtaccessCommand extends BaseCommand {
                     ->save();
                 console()->displaySuccess($add . " added to x-frame options policy");
                 die();
-            }else{
-                if(empty($remove)) {
+            } else {
+                if (empty($remove)) {
                     console()->displayError("ban list item missing");
                     die();
                 }
@@ -215,20 +213,19 @@ class HtaccessCommand extends BaseCommand {
                     ->save();
                 console()->displaySuccess($remove . " removed from x-frame options policy");
                 die();
-            }else{
+            } else {
                 console()->displayError("ban list item missing");
                 die();
             }
-
         }
 
-        if ($this->options[1] == "security-policy"){
+        if ($this->options[1] == "security-policy") {
             $action  = $this->argv[2]; // enable || disable
-            if ($action == "enable"){
+            if ($action == "enable") {
                 $htaccessManager->enableSecurityPolicy()
                     ->save();
                 console()->displaySuccess("Security policy enabled");
-            } elseif ($action == "disable"){
+            } elseif ($action == "disable") {
                 $htaccessManager->disableSecurityPolicy()
                     ->save();
                 console()->displaySuccess("Security policy disabled");
@@ -237,5 +234,4 @@ class HtaccessCommand extends BaseCommand {
             }
         }
     }
-
 }

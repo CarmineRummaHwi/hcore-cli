@@ -3,7 +3,9 @@
  * Class Console
  */
 namespace hcore\cli;
-class Console {
+
+class Console
+{
 
     /**
      * @var array
@@ -15,7 +17,8 @@ class Console {
      */
     private $background_colors = array();
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->foreground_colors['black'] = '0;30';
         $this->foreground_colors['dark_gray'] = '1;30';
         $this->foreground_colors['blue'] = '0;34';
@@ -49,7 +52,8 @@ class Console {
      * @param null $background_color
      * @return string
      */
-    private function getColoredString(string $string, ?string $foreground_color = null, ?string $background_color = null):string {
+    private function getColoredString(string $string, ?string $foreground_color = null, ?string $background_color = null):string
+    {
         $colored_string = "";
 
         // Check if given foreground color found
@@ -71,7 +75,8 @@ class Console {
      * Get Foreground Colors
      * @return array
      */
-    public function getForegroundColors():array {
+    public function getForegroundColors():array
+    {
         return array_keys($this->foreground_colors);
     }
 
@@ -79,7 +84,8 @@ class Console {
      * Get Background Colors
      * @return array
      */
-    public function getBackgroundColors():array {
+    public function getBackgroundColors():array
+    {
         return array_keys($this->background_colors);
     }
 
@@ -94,7 +100,8 @@ class Console {
      *
      * @return self
      */
-    public function display(string $message, string $foreground_color = null, string $background_color = null):self{
+    public function display(string $message, string $foreground_color = null, string $background_color = null):self
+    {
         print $this->getColoredString($message, $foreground_color, $background_color);
         return $this;
     }
@@ -106,35 +113,38 @@ class Console {
      * @param string|null $background_color
      * @return $this
      */
-    public function d(string $message, string $foreground_color = null, string $background_color = null):Console{
+    public function d(string $message, string $foreground_color = null, string $background_color = null):Console
+    {
         print $this->getColoredString($message, $foreground_color, $background_color);
         return $this;
     }
 
-    public function nl(int $lines = 1):Console{
+    public function nl(int $lines = 1):Console
+    {
         for ($i = 0; $i < $lines; $i++) {
             echo "\n";
         }
         return $this;
     }
-    public function space(int $rows = 1):Console{
+    public function space(int $rows = 1):Console
+    {
         for ($i = 0; $i < $rows; $i++) {
             print " ";
         }
         return $this;
     }
 
-    public function displayError(string $message):Console{
+    public function displayError(string $message):Console
+    {
         print $this->getColoredString($message, 'red');
         print $this->getColoredString(PHP_EOL); // Fix the red cursor
         return $this;
     }
 
-    public function displaySuccess(string $message):Console{
+    public function displaySuccess(string $message):Console
+    {
         print $this->getColoredString($message . PHP_EOL, 'green');
         print $this->getColoredString(PHP_EOL); // Fix the coloured cursor
         return $this;
     }
 }
-
-?>

@@ -5,8 +5,8 @@
  * @package hcore/cli
  */
 
-define ("CLASSES_PATH", dirname(__FILE__) . "/classes");
-define ("DOC_ROOT",     dirname(__FILE__));
+define("CLASSES_PATH", dirname(__FILE__) . "/classes");
+define("DOC_ROOT", dirname(__FILE__));
 
 spl_autoload_register(function (string $class):bool {
 

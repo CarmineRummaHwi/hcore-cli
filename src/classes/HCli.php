@@ -13,14 +13,16 @@ class HCli
     /** @var HCli */
     private static $instance;
 
+    const VERSION = '0.1.9';
     public $classes_path;
     private const name = "HCli";
 
     /**
      * @return HCli
      */
-    public static function getInstance() : HCli {
-        if(!self::$instance) {
+    public static function getInstance() : HCli
+    {
+        if (!self::$instance) {
             self::$instance = new HCli();
             self::$instance->classes_path = dirname(__FILE__);
         }
@@ -35,9 +37,9 @@ class HCli
      *
      * @return void
      */
-    public function run(String $command = "", ?array $opt = array(), ?array $argv = array()): void {
+    public function run(String $command = "", ?array $opt = array(), ?array $argv = array()): void
+    {
         if ($command) {
-
             if ($command == "-h" || $command == "--help") {
                 self::printAvailableCommands();
                 die();
@@ -58,7 +60,7 @@ class HCli
                  */
                 $CmdClass = new $commandClass($opt);
                 $CmdClass->argv = $argv;
-                if (true == $CmdClass->checkHelp()){
+                if (true == $CmdClass->checkHelp()) {
                     $CmdClass->showHelp();
                     die();
                 }
@@ -68,7 +70,6 @@ class HCli
             } else {
                 console()->displayError(self::name . ": command not Found");
             }
-
         } else {
             // No command Spec
             self::printAvailableCommands();
@@ -81,14 +82,15 @@ class HCli
      * @param array|null $opt
      * @param array|null $argv
      */
-    public function call(String $command = "", ?array $opt = array(), ?array $argv = array()): void {
+    public function call(String $command = "", ?array $opt = array(), ?array $argv = array()): void
+    {
         $argv_from_command = explode(" ", $command);
         $_command = "";
         $_opt = array();
 
-        if (count($argv_from_command) > 0){
+        if (count($argv_from_command) > 0) {
             array_unshift($argv_from_command, "hcore");
-            if (isset($argv_from_command[1])){
+            if (isset($argv_from_command[1])) {
                 $_command = $argv_from_command[1];
                 $_opt = explode(":", $command);
             }
@@ -100,8 +102,8 @@ class HCli
         }
     }
 
-    public static function printAvailableCommands() {
-
+    public static function printAvailableCommands()
+    {
         console()->display("Usage:", "yellow")
                  ->nl()
                  ->space(2)
@@ -126,27 +128,27 @@ class HCli
 
         $res = scandir(dirname(__FILE__) . "/Console/Commands/");
         $commands = [];
-        foreach($res as $item){
-            if ($item !== '.' && $item !== '..'){
-                if (file_exists(  dirname(__FILE__) . "/Console/Commands/" . $item)) {
+        foreach ($res as $item) {
+            if ($item !== '.' && $item !== '..') {
+                if (file_exists(dirname(__FILE__) . "/Console/Commands/" . $item)) {
                     require_once dirname(__FILE__) . "/Console/Commands/" . $item;
                     $commandClass = pathinfo($item, PATHINFO_FILENAME);
                     $command = new \BaseCommand();
                     /** @var BaseCommand $command */
                     $command = new $commandClass();
 
-                    console()->display("  " . $command->name , "green");
+                    console()->display("  " . $command->name, "green");
                     console()->display("\t" . $command->description . "\n");
-
                 } else {
-
                 }
             }
         }
     }
 
-    public static function getApplicationVersion(){
-        $ver = "";
+    public static function getApplicationVersion()
+    {
+        $ver = self::VERSION;
+        /*
         $dir = dirname(dirname(__DIR__));
         exec("cd $dir; git describe --abbrev=0 --tags", $version_mini_hash);
         if (is_array($version_mini_hash)){
@@ -156,10 +158,10 @@ class HCli
                 $ver = $clean_ver[0];
             }
         }
+        */
         console()->d(self::name)
                  ->space(1)
                  ->d($ver, "green")
                  ->nl();
-
     }
 }

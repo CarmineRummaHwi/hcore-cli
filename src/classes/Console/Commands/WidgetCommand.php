@@ -5,8 +5,8 @@
  * @package hcore/cli
  */
 
-class WidgetCommand extends BaseCommand {
-
+class WidgetCommand extends BaseCommand
+{
     public $name        = "widget";
     public $description = "HCore Widget command";
     public $arguments   = [
@@ -28,18 +28,14 @@ class WidgetCommand extends BaseCommand {
 
     public function exec() :void
     {
-
-        if (!isset($this->options[1])){
+        if (!isset($this->options[1])) {
             console()->displayError("Project name is required");
             die;
         }
 
         $cwd = $this->getCWD();
-        if ($this->options[1] == "create"){
+        if ($this->options[1] == "create") {
             ddd($this->argv);
-
         }
-
     }
-
 }
