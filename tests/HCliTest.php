@@ -10,5 +10,5 @@ final class HCliTest extends TestCase
     {
         $this->assertDirectoryIsWritable($this->testDir);
     }
-    
+
 }
