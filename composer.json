@@ -21,6 +21,11 @@
         "vimeo/psalm": "^3.7",
         "friendsofphp/php-cs-fixer": "^2.16"
     },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.x-dev"
