@@ -1,5 +1,6 @@
 {
     "name": "hcore/cli",
+    "version": "0.2.1",
     "description": "HCore Command Line Tools",
     "keywords": ["hcore"],
     "license": "MIT",
