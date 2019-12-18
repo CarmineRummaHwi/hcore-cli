@@ -34,24 +34,30 @@ class ApitestsCommand extends BaseCommand
     public function exec() :void
     {
         if (false == \hcore\cli\Utilities::checkNodeJsInstalled()) {
-            console()->displayError("nodejs is not installed")
-                     ->space(2)->d("Go to the site https://nodejs.org/en/download/ and download the necessary binary files." . PHP_EOL)
-                     ->nl();
-            die;
+            if (!$this->is_trigger) {
+                console()->displayError("nodejs is not installed")
+                    ->space(2)->d("Go to the site https://nodejs.org/en/download/ and download the necessary binary files." . PHP_EOL)
+                    ->nl();
+            }
+            return;
         }
 
         if (false == \hcore\cli\Utilities::checkNPMInstalled()) {
-            console()->displayError("npm is not installed")
-                     ->space(2)->d("Run this commands to install it: npm install npm -g" . PHP_EOL)
-                     ->nl();
-            die;
+            if (!$this->is_trigger) {
+                console()->displayError("npm is not installed")
+                    ->space(2)->d("Run this commands to install it: npm install npm -g" . PHP_EOL)
+                    ->nl();
+            }
+            return;
         }
 
         if (false == \hcore\cli\Utilities::checkNewmanInstalled()) {
-            console()->displayError("newman is not installed")
-                     ->space(2)->d("Run this commands to install it: npm i newman -g" . PHP_EOL)
-                     ->nl();
-            die;
+            if (!$this->is_trigger) {
+                console()->displayError("newman is not installed")
+                    ->space(2)->d("Run this commands to install it: npm i newman -g" . PHP_EOL)
+                    ->nl();
+            }
+            return;
         }
 
         $cwd = $this->getCWD();
@@ -61,8 +67,10 @@ class ApitestsCommand extends BaseCommand
         $action  = $this->argv[2]; // init || run
         if ($action == "init") {
             if (false === \hcore\cli\Utilities::dirIsRepository($cwd)) {
-                console()->displayError("This Directory is not a Git Repository!")
-                         ->d("you can run this command only on repository folder", "dark_gray")->nl();
+                if (!$this->is_trigger) {
+                    console()->displayError("This Directory is not a Git Repository!")
+                        ->d("you can run this command only on repository folder", "dark_gray")->nl();
+                }
                 return;
             }
 

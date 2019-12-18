@@ -94,8 +94,6 @@ class CreateCommand extends BaseCommand
             $composer->addRequire('hcore/notifier', '^0.3');
             $composer->addRequire('hcore/installer', '^0.3');
             $composer->addRequire('hcore/orm', '^0.3');
-            $composer->addRequire('hcore/dmr', '^0.3');
-            $composer->addRequire('hcore/uploader', '^0.3');
             $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.git",
@@ -125,6 +123,7 @@ class CreateCommand extends BaseCommand
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
             if (trim($res) === "" || trim($res) === "y") {
+                $composer->addRequire('hcore/dmr', '^0.3');
                 $composer->addRepository(array(
                     'type' => 'git',
                     'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.dmr.git",
@@ -137,6 +136,7 @@ class CreateCommand extends BaseCommand
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
             if (trim($res) === "" || trim($res) === "y") {
+                $composer->addRequire('hcore/uploader', '^0.3');
                 $composer->addRepository(array(
                     'type' => 'git',
                     'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.uploader.git",

@@ -13,7 +13,7 @@ class HCli
     /** @var HCli */
     private static $instance;
 
-    const VERSION = '0.2.0';
+    const VERSION = '0.2.2';
     public $classes_path;
     private const name = "HCli";
 
@@ -34,10 +34,11 @@ class HCli
      * @param String $command
      * @param array|null $opt
      * @param array|null $argv
+     * @param bool $trigger indicates whether the current command is triggered by the call method
      *
      * @return void
      */
-    public function run(String $command = "", ?array $opt = array(), ?array $argv = array()): void
+    public function run(String $command = "", ?array $opt = array(), ?array $argv = array(), bool $trigger = false): void
     {
         if ($command) {
             if ($command == "-h" || $command == "--help") {
@@ -63,6 +64,9 @@ class HCli
                 if (true == $CmdClass->checkHelp()) {
                     $CmdClass->showHelp();
                     die();
+                }
+                if ($trigger == true){
+                    $CmdClass->is_trigger = true;
                 }
                 $CmdClass->preExec();
                 print $CmdClass->exec();
@@ -98,11 +102,14 @@ class HCli
             if (!empty($opt[1])) {
                 $_command = $opt[0];
             }
-            self::getInstance()->run($_command, $_opt, $argv_from_command);
+            self::getInstance()->run($_command, $_opt, $argv_from_command, true);
         }
     }
 
-    public static function printAvailableCommands()
+    /**
+     *
+     */
+    public static function printAvailableCommands():void
     {
         console()->display("Usage:", "yellow")
                  ->nl()

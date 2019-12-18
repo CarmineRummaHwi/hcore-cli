@@ -171,6 +171,25 @@ class Utilities
     }
 
     /**
+     * @param string $source
+     * @param string $dest
+     */
+    public static function copyDirectory(string $source, string $dest): void{
+        mkdir($dest, 0755);
+        foreach (
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::SELF_FIRST) as $item
+        ) {
+            if ($item->isDir()) {
+                mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+            } else {
+                copy($item, $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+            }
+        }
+    }
+
+    /**
      * @param string $dir
      * @return bool
      */

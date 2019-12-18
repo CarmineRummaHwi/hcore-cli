@@ -18,6 +18,12 @@ class BaseCommand
     public $usage = [];
 
     /**
+     * indicates whether the current command is triggered by the HCli->call method
+     * @var bool
+     */
+    public $is_trigger = false;
+
+    /**
      * @var \hcore\cli\Console
      */
     public $console;
@@ -140,6 +146,12 @@ class BaseCommand
                     ->nl();
             }
             console()->nl();
+        }
+    }
+
+    public function end(){
+        if (!$this->is_trigger){
+            die;
         }
     }
 }
