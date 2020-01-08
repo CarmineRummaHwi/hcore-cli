@@ -10,9 +10,11 @@ installed on your machine.
 
 First, download the HCore/CLI using Composer:
 
-``` {.language-php}
-composer global require hcore/cli
-```
+    composer global require hcore/cli
+
+to update HCore/CLI to latest version
+
+    composer global update hcore/cli
 
 Make sure to place Composer's system-wide vendor bin directory in your
 `$PATH`{.language-php} so the HCORE executable can be located by your
