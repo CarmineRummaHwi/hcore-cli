@@ -11,6 +11,8 @@ class BaseCommand
     const COMMAND = 'hcore';
     public $name;
     public $options;
+    public $cli_options;
+    public $longoptions;
     public $argv;
     public $description;
     public $arguments;
@@ -147,6 +149,16 @@ class BaseCommand
             }
             console()->nl();
         }
+    }
+
+    public function checkOption(string $short, string $regular): bool {
+        $cliOptions = \hcore\cli\Utilities::getOptions($this->longoptions);
+        foreach ($this->cli_options as $key => $item){
+            if ($key == $short || $key == $regular){
+                return true;
+            }
+        }
+        return false;
     }
 
     public function end(){

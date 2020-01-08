@@ -17,7 +17,13 @@ class CreateCommand extends BaseCommand
             "description"   => "your project name"
         ],
     ];
+    public $longoptions = ["dev"];
     public $options_desc = [
+        [
+            "short"         => "-d",
+            "regular"       => "--dev",
+            "description"   => "install also the dev requirements",
+        ],
         /*[
             "short"         => "-u",
             "regular"       => "--user",
@@ -54,6 +60,14 @@ class CreateCommand extends BaseCommand
         }
 
         $prefix = "";
+
+        $requireDev = false;
+        $composerCommandOption = "--no-dev";
+        if ($this->checkOption("d", "dev")){
+            $requireDev = true;
+            $composerCommandOption = "";
+        }
+
         /*
         $bitbucketUser = search_argv_val("-u", $this->argv);
         $bitbucketUser = empty($bitbucketUser) ? search_argv_val("--user", $this->argv) : $bitbucketUser;
@@ -81,6 +95,9 @@ class CreateCommand extends BaseCommand
             );
 
             $composer = new \hcore\cli\ComposerFactory();
+            /**
+             * HCore Legacy Core
+             */
             $composer->add("name", "hcore/" . $this->argv[2]);
             $composer->add("type", "library");
             $composer->add("version", "1.0");
@@ -94,6 +111,11 @@ class CreateCommand extends BaseCommand
             $composer->addRequire('hcore/notifier', '^0.3');
             $composer->addRequire('hcore/installer', '^0.3');
             $composer->addRequire('hcore/orm', '^0.3');
+
+            if($requireDev == true){
+                $composer->addRequireDev("phpunit/phpunit", "^7");
+            }
+
             $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.git",
@@ -118,6 +140,7 @@ class CreateCommand extends BaseCommand
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.orm.git",
             ));
+
             /* DMR */
             console()->d("Do you need module DMR? [y/N]:");
             $handle = fopen("php://stdin", "r");
@@ -148,21 +171,16 @@ class CreateCommand extends BaseCommand
                 'type' => 'git',
                 'url' => 'https://bitbucket.org/cmsff/libs.git',
             ));
-            /*
+
             $composer->addAutoload("psr-4", array (
-                'hcore\\' => 'src/',
                 'hcore\\app\\conf\\' => "app/conf/"
             ));
-            $composer->addAutoload("classmap", array (
-                'src/',
-            ));
-            */
-
             $composer->addScripts();
+            $composer->addConfig();
+
 
             $fp = fopen($cwd . '/composer.json', 'w');
             fwrite($fp, $composer->toJson());
-
             fclose($fp);
 
             $fp = fopen($cwd . '/hcore.lock', 'w');
@@ -177,7 +195,7 @@ class CreateCommand extends BaseCommand
 
             HCli::getInstance()->call("apitests init");
 
-            echo shell_exec("composer install");
+            echo shell_exec("composer install " . $composerCommandOption);
         }
     }
 
@@ -189,6 +207,11 @@ class CreateCommand extends BaseCommand
                      ->d("https://bitbucket.org/account/user/<yoususername>/api", "blue")
                      ->nl();
             console()->d("and add Consumer OAuth", "blue")->nl(2);
+            console()->d("Click the Add consumer button.", "blue")->nl()
+                     ->d("Insert the name for your consumer (ex. composer)", "blue")->nl()
+                     ->d("An optional description of what your consumer does.", "blue")->nl()
+                     ->d("A fake Callback URL (ex. example.com)", "blue")->nl()
+                     ->d("Grants read access to all the repositories", "blue")->nl();
             console()->d("Please insert consumer-key:");
 
             $bitbucketData = array();

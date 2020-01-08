@@ -115,6 +115,56 @@ class Utilities
         return $result;
     }
 
+    public static function checkLongOption(string $arg, array $longoptions = array(), bool $get_value){
+
+        foreach ($longoptions as $opt) {
+            if (strpos($arg, $opt) !== FALSE) {
+                $key = strpos($arg, $opt);
+                return $key;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getOptions(array $longoptions = array()):?array {
+        global $argv, $argc;
+        $options = array();
+
+        for($i = 0;$i < $argc; $i++) {
+            $arg = $argv[$i];
+            if(strlen($arg) > 1 && $arg[0] == '-') {
+                if($arg[1] == '-' && $i + 1 < $argc) {
+                    //$i++;
+                    //$options[substr($arg,2, strlen($arg))] = $argv[$i];
+                    $check = self::checkLongOption($arg, array_map( function ($item){
+                        return "--" . $item;
+                    }, $longoptions));
+
+                    if ($check !== false){
+                        $options[$longoptions[$check]] = "asd"; // @todo longoptions
+                    }
+                } else {
+                    if ($arg[1] == '-'){
+
+                        $check = self::checkLongOption($arg, array_map( function ($item){
+                            return "--" . $item;
+                        }, $longoptions));
+
+                        if ($check !== false){
+                            $options[$longoptions[$check]] = "asd"; // @todo longoptions
+                        }
+                        //$options[substr($arg,2, strlen($arg))] = substr($arg,5, strlen($arg));
+                    } else
+                        $options[$arg[1]] = substr($arg,2, strlen($arg));
+                }
+            }
+        }
+        return $options;
+    }
+
     /**
      * @param string $needle
      * @param array $argv
@@ -126,7 +176,9 @@ class Utilities
         // Strict search (ex. -uusername)
         $indexArr = array_search($needle, $argv);
         if ($indexArr !== false) {
-            return trim($argv[$indexArr + 1]);
+            if (isset($argv[$indexArr + 1])) {
+                return trim($argv[$indexArr + 1]);
+            }
         }
 
 

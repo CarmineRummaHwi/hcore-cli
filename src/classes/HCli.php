@@ -13,7 +13,7 @@ class HCli
     /** @var HCli */
     private static $instance;
 
-    const VERSION = '0.2.2';
+    const VERSION = '0.2.3';
     public $classes_path;
     private const name = "HCli";
 
@@ -61,6 +61,7 @@ class HCli
                  */
                 $CmdClass = new $commandClass($opt);
                 $CmdClass->argv = $argv;
+                $CmdClass->cli_options = Utilities::getOptions(["dev"]);
                 if (true == $CmdClass->checkHelp()) {
                     $CmdClass->showHelp();
                     die();

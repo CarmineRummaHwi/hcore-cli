@@ -21,6 +21,12 @@ class ComposerFactory
         $this->root = array();
     }
 
+    public function read(string $filename){
+        $file   = file_get_contents($filename);
+        $arr    = json_decode($file, true);
+        $this->root = $arr;
+    }
+
     public function add(string $key, string $value):void
     {
         $this->root[$key] = $value;
@@ -36,16 +42,16 @@ class ComposerFactory
         $this->root["require"][$dep] = $ver;
     }
 
-    public function addRequireDev(string $value):void
+    public function addRequireDev(string $dep, string $ver):void
     {
-        $this->root["require-dev"][] = $value;
+        $this->root["require-dev"][$dep] = $ver;
     }
 
     public function addRepository(array $value):void
     {
         $this->root["repositories"][] = $value;
     }
-    public function addAutoload(string $key, string $value):void
+    public function addAutoload(string $key, array $value):void
     {
         $this->root["autoload"][$key] = $value;
     }
@@ -56,6 +62,14 @@ class ComposerFactory
             "post-autoload-dump" => ["\\hcore\\Installer::dumpautoload"],
             "create-project-tree" => ["\\hcore\\Installer::createprojecttree"],
             "build-preflights" => ["\\hcore\\Installer::buildpreflights"]
+        ];
+    }
+
+    public function addConfig(){
+        $this->root["config"] = [
+            "optimize-autoloader" => true,
+            "classmap-authoritative" => true,
+            "apcu-autoloader" => true
         ];
     }
 

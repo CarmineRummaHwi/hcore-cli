@@ -76,7 +76,7 @@ class PrecommitManager
         if ($write_res === false) {
             return false;
         }
-        if (true == chmod($this->precommit_path, 0755)) {
+        if (true == @chmod($this->precommit_path, 0755)) {
             file_put_contents($this->precommit_path_lock, time());
             return true;
         }

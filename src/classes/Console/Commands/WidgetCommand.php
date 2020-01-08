@@ -71,6 +71,24 @@ class WidgetCommand extends BaseCommand
             echo ($this->overrideFolder(DIRECTORY_SEPARATOR . $widget));
             die;*/
             \hcore\cli\Utilities::copyDirectory($widget_path, $this->overrideFolder(DIRECTORY_SEPARATOR . $widget));
+
+            return true;
+        } else {
+            $widget_path = $this->getWidgetPath($module);
+            $directories = glob($widget_path . '*' , GLOB_ONLYDIR);
+            foreach($directories as $item){
+                if (!file_exists($item)){
+
+                    console()->d("Widget", "red")
+                        ->space(1)
+                        ->d($widget, "dark_gray")
+                        ->space(1)->d("not found!", "red");
+
+                    return false;
+                }
+
+                \hcore\cli\Utilities::copyDirectory($item, $this->overrideFolder(DIRECTORY_SEPARATOR . basename($item)));
+            }
             return true;
         }
 
@@ -78,11 +96,6 @@ class WidgetCommand extends BaseCommand
 
     public function exec() :void
     {
-        if (!isset($this->options[1])) {
-            console()->displayError("Project name is required");
-            die;
-        }
-
         $cwd = $this->getCWD();
         if ($this->options[1] == "create") {
 
@@ -96,11 +109,14 @@ class WidgetCommand extends BaseCommand
             $parsed = explode("/", $mod_widget_path);
             if (sizeof($parsed) > 0){
                 $module = $parsed[0];
-                $widget = $parsed[1];
-                if (!empty($module) && !empty($widget)){
+                if (!empty($module) && isset($parsed[1])){
+                    $widget = $parsed[1];
                     $this->copyOverrideFolder($module, $widget);
+                    console()->displaySuccess("Widget $widget published in app/views/widgets/$widget");
+                } else if(!empty($module)){
+                    $this->copyOverrideFolder($module);
+                    console()->displaySuccess("All $module widgets published in app/views/widgets/");
                 }
-
             }
         }
     }
