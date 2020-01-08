@@ -31,13 +31,14 @@ by running this command:
 composer global config home 
 ```
 
-### Documentation
+#
+**`Documentation`**
 
 *   [Introduction](#introduction)
 *   [Usage](#usage)
-*   [Create your Application](#create_your_app)
+*   [Create your Application](#createyourapp)
 *   [Modules](#modules)
-*   [Widget Override](#widget_override)
+*   [Widget Override](#widgetoverride)
 
 ## [Introduction](#introduction)
 
@@ -65,7 +66,7 @@ You may also view the current version of your hcore/cli installation using the "
 
 <a name="calling-commands-outside-of-cli"></a>
 
-## [Create your Application](#create_your_app)
+## [Create your Application](#createyourapp)
 
 to create your own project 
 go to the project folder and launch this command:
@@ -73,6 +74,8 @@ go to the project folder and launch this command:
     hcore create <your-project-name>
 
 the command will ask you if you want to download additional modules (by default it will download them).
+The command after creating the composer.json launches the "composer install" without the require-devs.
+To include these add the -d option
 
 ![alt text](resources/bitbucket-oauth.png "BitBucket OAuth")
 
@@ -91,7 +94,7 @@ Example:
     hcore module:remove hcore/dmr
     
 
-## [Widget Override](#widget_override)
+## [Widget Override](#widgetoverride)
 
 to override a widget use the command:
 
