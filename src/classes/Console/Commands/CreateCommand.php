@@ -17,12 +17,17 @@ class CreateCommand extends BaseCommand
             "description"   => "your project name"
         ],
     ];
-    public $longoptions = ["dev"];
+    public $longoptions = ["dev", "json"];
     public $options_desc = [
         [
             "short"         => "-d",
             "regular"       => "--dev",
             "description"   => "install also the dev requirements",
+        ],
+        [
+            "short"         => "-j",
+            "regular"       => "--json",
+            "description"   => "only generate composer.json without install",
         ],
         /*[
             "short"         => "-u",
@@ -63,9 +68,16 @@ class CreateCommand extends BaseCommand
 
         $requireDev = false;
         $composerCommandOption = "--no-dev";
+        $install = true;
         if ($this->checkOption("d", "dev")){
             $requireDev = true;
             $composerCommandOption = "";
+            /*$this->checkOption("d", "dev", function ($value){
+                die("Value enetered: " . $value);
+            });*/
+        }
+        if ($this->checkOption("j", "json")){
+            $install = false;
         }
 
         /*
@@ -142,7 +154,7 @@ class CreateCommand extends BaseCommand
             ));
 
             /* DMR */
-            console()->d("Do you need module DMR? [y/N]:");
+            console()->d("Do you need module DMR? [y/N] (y):");
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
             if (trim($res) === "" || trim($res) === "y") {
@@ -155,7 +167,7 @@ class CreateCommand extends BaseCommand
             /* DMR */
 
             /* UPLOADER */
-            console()->d("Do you need module UPLOADER? [y/N]:");
+            console()->d("Do you need module UPLOADER? [y/N] (y):");
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
             if (trim($res) === "" || trim($res) === "y") {
@@ -195,7 +207,9 @@ class CreateCommand extends BaseCommand
 
             HCli::getInstance()->call("apitests init");
 
-            echo shell_exec("composer install " . $composerCommandOption);
+            if ($install == true) {
+                echo shell_exec("composer install " . $composerCommandOption);
+            }
         }
     }
 

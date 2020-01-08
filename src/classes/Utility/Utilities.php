@@ -115,12 +115,19 @@ class Utilities
         return $result;
     }
 
-    public static function checkLongOption(string $arg, array $longoptions = array(), bool $get_value){
+    /**
+     * @param string $arg
+     * @param array $longoptions
+     * @param bool $get_value
+     * @return bool|int
+     */
+    public static function checkLongOption(string $arg, array $longoptions = array())
+    {
 
         foreach ($longoptions as $opt) {
             if (strpos($arg, $opt) !== FALSE) {
-                $key = strpos($arg, $opt);
-                return $key;
+                //$key = strpos($arg, $opt);
+                return array(str_replace("--","", $opt), str_replace($opt, "", $arg));
             }
         }
         return false;
@@ -144,7 +151,7 @@ class Utilities
                     }, $longoptions));
 
                     if ($check !== false){
-                        $options[$longoptions[$check]] = "asd"; // @todo longoptions
+                        $options[$check[0]] = $check[1];
                     }
                 } else {
                     if ($arg[1] == '-'){
@@ -154,11 +161,12 @@ class Utilities
                         }, $longoptions));
 
                         if ($check !== false){
-                            $options[$longoptions[$check]] = "asd"; // @todo longoptions
+                            $options[$check[0]] = $check[1];
                         }
                         //$options[substr($arg,2, strlen($arg))] = substr($arg,5, strlen($arg));
-                    } else
-                        $options[$arg[1]] = substr($arg,2, strlen($arg));
+                    } else {
+                        $options[$arg[1]] = substr($arg, 2, strlen($arg));
+                    }
                 }
             }
         }

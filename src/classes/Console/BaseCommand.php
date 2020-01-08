@@ -12,7 +12,7 @@ class BaseCommand
     public $name;
     public $options;
     public $cli_options;
-    public $longoptions;
+    public $longoptions = [];
     public $argv;
     public $description;
     public $arguments;
@@ -151,10 +151,19 @@ class BaseCommand
         }
     }
 
-    public function checkOption(string $short, string $regular): bool {
+    /**
+     * @param string $short
+     * @param string $regular
+     * @param null $callback
+     * @return bool
+     */
+    public function checkOption(string $short, string $regular, $callback = null): bool {
         $cliOptions = \hcore\cli\Utilities::getOptions($this->longoptions);
         foreach ($this->cli_options as $key => $item){
             if ($key == $short || $key == $regular){
+                if (is_callable($callback)){
+                    call_user_func($callback, $item);
+                }
                 return true;
             }
         }

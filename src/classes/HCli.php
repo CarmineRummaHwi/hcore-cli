@@ -61,7 +61,7 @@ class HCli
                  */
                 $CmdClass = new $commandClass($opt);
                 $CmdClass->argv = $argv;
-                $CmdClass->cli_options = Utilities::getOptions(["dev"]);
+                $CmdClass->cli_options = Utilities::getOptions($CmdClass->longoptions);
                 if (true == $CmdClass->checkHelp()) {
                     $CmdClass->showHelp();
                     die();
