@@ -10,7 +10,6 @@ namespace hcore\cli;
 
 class ComposerFactory
 {
-
     /* @var array */
     private $root;
     /* @var array */
@@ -21,10 +20,19 @@ class ComposerFactory
         $this->root = array();
     }
 
-    public function read(string $filename){
-        $file   = file_get_contents($filename);
-        $arr    = json_decode($file, true);
-        $this->root = $arr;
+    /**
+     * @param string $filename
+     */
+    public function read(string $filename):void {
+        if (file_exists($filename)) {
+            $file = file_get_contents($filename);
+            $arr = json_decode($file, true);
+            $this->root = $arr;
+        }
+    }
+
+    public function dump(): void{
+        ddd($this->root);
     }
 
     public function add(string $key, string $value):void

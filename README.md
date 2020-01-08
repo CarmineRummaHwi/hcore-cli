@@ -64,8 +64,6 @@ You may also view the current version of your hcore/cli installation using the "
 
     hcore -V
 
-<a name="calling-commands-outside-of-cli"></a>
-
 ## [Create your Application](#createyourapp)
 
 to create your own project 
@@ -74,14 +72,22 @@ go to the project folder and launch this command:
     hcore create <your-project-name>
 
 the command will ask you if you want to download additional modules (by default it will download them).
-The command after creating the composer.json launches the "composer install" without the require-devs.
-To include these add the -d option
 
 ![alt text](resources/bitbucket-oauth.png "BitBucket OAuth")
 
 follow the instructions to create your consumer key on the settings of your BitBucket account and enter the required key and secret.
 
 At the end of the execution the project structure will be created.
+
+##### require-dev
+The command after creating the composer.json launches the "composer install" without the require-devs.
+To include these add the "-d, --dev" option
+
+##### generate only composer.json without install
+if you want the command to generate only the composer.json file
+add the "-j, --json" option.
+
+
 
 ## [Modules](#modules)
 
