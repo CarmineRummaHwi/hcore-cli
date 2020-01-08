@@ -52,7 +52,7 @@ class ModuleCommand extends BaseCommand
 
             //ddd($this->argv);
             $module = $this->argv[2];
-            shell_exec("composer remove $module");
+            shell_exec("composer remove hcore/$module");
         } /*else if ($this->options[1] == "add") {
 
             if (!isset($this->argv[2])) {

@@ -97,7 +97,8 @@ you can remove a module after installation using the command:
 
 Example:
     
-    hcore module:remove hcore/dmr
+    hcore module:remove dmr
+    hcore module:remove uploader
     
 
 ## [Widget Override](#widgetoverride)
