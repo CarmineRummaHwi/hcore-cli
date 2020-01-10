@@ -242,6 +242,10 @@ class CreateCommand extends BaseCommand
 
             $out = array("bitbucket-oauth" => array("bitbucket.org" => $bitbucketData));
             $fp = fopen($this->getCWD() . '/auth.json', 'w');
+            if ( !$fp ) {
+                console()->displayError("can't write the file auth.json. Please check the folder permissions!");
+                die;
+            }
             fwrite($fp, json_encode($out, JSON_PRETTY_PRINT));
             fclose($fp);
 

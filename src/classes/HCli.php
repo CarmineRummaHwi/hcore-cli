@@ -13,7 +13,7 @@ class HCli
     /** @var HCli */
     private static $instance;
 
-    const VERSION = '0.2.3';
+    const VERSION = '0.2.4';
     public $classes_path;
     private const name = "HCli";
 

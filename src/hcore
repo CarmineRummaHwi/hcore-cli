@@ -5,8 +5,16 @@
  * @author carmine.rumma@healthwareinternational.com
  * @package hcore/cli
  */
-
 set_time_limit(0);
+
+if (version_compare(phpversion(), '7.2.0', '<')) {
+    $minVer = "7.2.0";
+    $php_version = phpversion();
+    $message = "HCli requires at least version $minVer of PHP.You are running an older version ($php_version). Please upgrade!";
+    echo "\033[41m";
+    echo $message . "\033[0m\n\n";
+    die;
+}
 
 //$cwd = empty($_SERVER['PWD']) ? getcwd() : $_SERVER['PWD'];
 require_once (dirname(__FILE__) . "/autoload.php");

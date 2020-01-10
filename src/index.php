@@ -5,7 +5,8 @@ use \hcore\cli\HCli;
 require_once(dirname(__FILE__) . "/autoload.php");
 require_once(dirname(__FILE__) . "/bootstrap.php");
 //HCli::getInstance()->call("apitests init");
-
+/*
 $composer = new \hcore\cli\ComposerFactory();
 $composer->read(dirname(dirname(__FILE__)) . "/example/composer.json");
 $composer->dump();
+*/
