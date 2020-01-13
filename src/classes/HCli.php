@@ -14,6 +14,7 @@ class HCli
     private static $instance;
 
     const VERSION = '0.2.4';
+    public $cli_path;
     public $classes_path;
     private const name = "HCli";
 
@@ -24,11 +25,11 @@ class HCli
     {
         if (!self::$instance) {
             self::$instance = new HCli();
+            self::$instance->cli_path = dirname(dirname(__FILE__));
             self::$instance->classes_path = dirname(__FILE__);
         }
         return self::$instance;
     }
-
 
     /**
      * @param String $command
@@ -105,6 +106,47 @@ class HCli
             }
             self::getInstance()->run($_command, $_opt, $argv_from_command, true);
         }
+    }
+
+    /**
+     * Get HCore Modules
+     * @return array
+     */
+    public function getModules(): array {
+        $modules_config = include(dirname(__DIR__) . "/configs/modules.php");
+        if ($modules_config["type"] == "local") {
+            $modules_path = $this->cli_path . DIRECTORY_SEPARATOR . $modules_config["filename"];
+        } else {
+            $modules_path = $modules_config["filename"];
+        }
+        if (file_exists($modules_path)){
+            $jModules = file_get_contents($modules_path);
+            $aModules = json_decode($jModules, true);
+
+            if (is_array($aModules)) {
+                return $aModules;
+            } else {
+                console()->displayError("The file modules.json is corrupted");
+                return array();
+            }
+        } else {
+            console()->displayError("modules.json not found!");
+            return array();
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return array|null
+     */
+    public static function getModuleDef(string $name = ""):?array {
+        $modules = self::getInstance()->getModules();
+        foreach ($modules as $key => $val) {
+            if ($val['name'] === $name) {
+                return $val;
+            }
+        }
+        return null;
     }
 
     /**

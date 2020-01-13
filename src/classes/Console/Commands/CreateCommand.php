@@ -96,6 +96,8 @@ class CreateCommand extends BaseCommand
 
         if ($this->argv[2]) {
             $cwd = $this->getCWD();
+            $modules = HCli::getInstance()->getModules();
+
             $authorItems     = array();
             $authorItems[]   = array(
                 'name'  => 'Carmine Rumma',
@@ -118,7 +120,7 @@ class CreateCommand extends BaseCommand
             //$composer->addAuthor($authorItem[1]);
             $composer->add("minimum-stability", "dev");
             $composer->addRequire('hcore/core', '^0.3');
-            $composer->addRequire('hcore/auth', '^0.3');
+            //$composer->addRequire('hcore/auth', '^0.3');
             $composer->addRequire('hcore/api', '^0.3');
             $composer->addRequire('hcore/notifier', '^0.3');
             $composer->addRequire('hcore/installer', '^0.3');
@@ -132,10 +134,10 @@ class CreateCommand extends BaseCommand
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.git",
             ));
-            $composer->addRepository(array(
+            /*$composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.auth.git",
-            ));
+            ));*/
             $composer->addRepository(array(
                 'type' => 'git',
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.api.git",
@@ -153,7 +155,27 @@ class CreateCommand extends BaseCommand
                 'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.orm.git",
             ));
 
+
+            foreach($modules as $module_key => $module){
+                $name       = $module["name"];
+                $repository = $module["repository"];
+                $dep        = $module["dep"];
+                $version    = $module["version"];
+                $rep_type   = $repository["type"];
+                $rep_url    = $repository["url"];
+                console()->d("Do you need module ")
+                         ->d(strtoupper($name), "dark_gray")
+                         ->d("? [y/N] (y):");
+                $handle = fopen("php://stdin", "r");
+                $res    = fgets($handle);
+                if (trim($res) === "" || trim($res) === "y") {
+                    $composer->addRequire($dep, $version);
+                    $composer->addRepository($repository);
+                }
+            }
+
             /* DMR */
+            /*
             console()->d("Do you need module DMR? [y/N] (y):");
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
@@ -164,9 +186,6 @@ class CreateCommand extends BaseCommand
                     'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.dmr.git",
                 ));
             }
-            /* DMR */
-
-            /* UPLOADER */
             console()->d("Do you need module UPLOADER? [y/N] (y):");
             $handle = fopen("php://stdin", "r");
             $res    = fgets($handle);
@@ -177,6 +196,7 @@ class CreateCommand extends BaseCommand
                     'url' => "https://{$prefix}bitbucket.org/HealthwareGroup/hcore.uploader.git",
                 ));
             }
+            */
             /* UPLOADER */
 
             $composer->addRepository(array(
@@ -192,10 +212,18 @@ class CreateCommand extends BaseCommand
 
 
             $fp = fopen($cwd . '/composer.json', 'w');
+            if ( !$fp ) {
+                console()->displayError("can't write the file composer.json. Please check the folder permissions!");
+                die;
+            }
             fwrite($fp, $composer->toJson());
             fclose($fp);
 
             $fp = fopen($cwd . '/hcore.lock', 'w');
+            if ( !$fp ) {
+                console()->displayError("can't write the file hcore.lock. Please check the folder permissions!");
+                die;
+            }
             fwrite($fp, json_encode(array(
                 "name" => "hcore/" . $this->argv[2]
             )));

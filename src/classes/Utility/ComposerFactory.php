@@ -50,6 +50,11 @@ class ComposerFactory
         $this->root["require"][$dep] = $ver;
     }
 
+    public function checkRequireDep(string $dep):bool
+    {
+        return isset($this->root["require"][$dep]);
+    }
+
     public function addRequireDev(string $dep, string $ver):void
     {
         $this->root["require-dev"][$dep] = $ver;
@@ -57,7 +62,18 @@ class ComposerFactory
 
     public function addRepository(array $value):void
     {
-        $this->root["repositories"][] = $value;
+        $exists = false;
+        if (isset($this->root["repositories"])) {
+            foreach ($this->root["repositories"] as $item) {
+                if ($item["url"] === $value["url"]) {
+                    $exists = true;
+                    break;
+                }
+            }
+        }
+
+        if (!$exists)
+            $this->root["repositories"][] = $value;
     }
     public function addAutoload(string $key, array $value):void
     {

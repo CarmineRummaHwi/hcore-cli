@@ -1,0 +1,46 @@
+[{
+    "name": "auth",
+    "dep": "hcore/auth",
+    "version": "^0.3",
+    "repository": {
+      "type": "git",
+      "url": "https://bitbucket.org/HealthwareGroup/hcore.auth.git"
+    }
+  },
+    {
+      "name": "dmr",
+      "dep": "hcore/dmr",
+      "version": "^0.3",
+      "repository": {
+        "type": "git",
+        "url": "https://bitbucket.org/HealthwareGroup/hcore.dmr.git"
+      }
+    },
+    {
+      "name": "uploader",
+      "dep": "hcore/uploader",
+      "version": "^0.3",
+      "repository": {
+        "type": "git",
+        "url": "https://bitbucket.org/HealthwareGroup/hcore.uploader.git"
+      }
+    },
+    {
+      "name": "meet",
+      "dep": "hcore/meet",
+      "version": "^0.3",
+      "repository": {
+        "type": "git",
+        "url": "https://bitbucket.org/HealthwareGroup/hcore.meet.git"
+      }
+    },
+    {
+      "name": "filebucket",
+      "dep": "hcore/filebucket",
+      "version": "^0.3",
+      "repository": {
+        "type": "git",
+        "url": "https://bitbucket.org/HealthwareGroup/hcore.filebucket.git"
+      }
+    }
+]

@@ -81,6 +81,13 @@ follow the instructions to create your consumer key on the settings of your BitB
 
 At the end of the execution the project structure will be created.
 
+Note: sometimes the BitBucket OAuth may not work. In that case launch first the command: 
+    
+    composer clearcache
+
+
+
+
 ##### require-dev
 The command after creating the composer.json launches the "composer install" without the require-devs.
 To include these add the "-d, --dev" option
@@ -93,16 +100,33 @@ add the "-j, --json" option.
 
 ## [Modules](#modules)
 
-you can remove a module after installation using the command:
+you can add or remove a module after installation.
+- To remove an existing module launch the command:
 
-    hcore module:remove <module_name>
+        hcore module:remove <module_name>
 
-Example:
+    Example:
     
-    hcore module:remove dmr
-    hcore module:remove uploader
+        hcore module:remove dmr
+        hcore module:remove uploader
     
-
+- To add a new hcore module launch the command:
+    
+        hcore module:add <module_name>
+    
+    Example:
+        
+        hcore module:add auth
+        hcore module:add uploader
+        
+    ##### require-dev
+    The command after updating the composer.json launches the "composer install" without the require-devs.
+    To include these add the "-d, --dev" option
+    
+    ##### generate only composer.json without install
+    if you want the command to update only the composer.json file
+    add the "-j, --json" option.
+    
 ## [Widget Override](#widgetoverride)
 
 to override a widget use the command:
